@@ -16,6 +16,7 @@ Run an independent, specialist review panel for substantive review work. The lea
 - Tailor the panel to the change. Do not mechanically spawn a fixed set of reviewers when fewer, broader, narrower, or different specialists would review the target better.
 - Keep reviewer agents independent. Start them with fresh context where possible; do not include implementation chat history, your private conclusions, or expected findings.
 - Run the panel concurrently. Spawn reviewers in parallel and blind to each other, then aggregate once they all return.
+- Close out reviewer subagents when done. If your harness uses persistent or pool-limited subagents, release each reviewer once you have captured its result, and close superseded reviewers from a prior round before spawning the next. If a spawn fails because the subagent limit is reached, close completed or stale reviewers and retry once before treating it as blocked.
 - Review a frozen target per round. Pin the change to a stable reference and give every reviewer in that round the same diff; after fixes, create a new frozen target for the next round.
 - Reviewer output is advisory. Verify findings by reading the actual code path, adjacent files, project standards, and external docs when relevant.
 - Prefer actionable findings over nits. Reject speculative risks, taste-only feedback, broad rewrites, and edge cases that do not matter for the target.
