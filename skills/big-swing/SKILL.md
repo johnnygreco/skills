@@ -1,7 +1,7 @@
 ---
 name: big-swing
 description: >-
-  Use when the user asks an agent to complete a large, long-running, or multi-PR goal coordinated through GitHub issues as the task tracker and pull requests as the reviewer interface, especially with harness goals such as "/goal Use $big-swing...".
+  Use when the user asks an agent to complete a large, long-running, or multi-PR goal coordinated through GitHub issues as the task tracker and pull requests as the reviewer interface. Guides decomposition into self-contained issues, sequential implementation PRs, independent review, and final holistic review.
 metadata:
   short-description: Coordinate long goals with issues and PRs
 ---
