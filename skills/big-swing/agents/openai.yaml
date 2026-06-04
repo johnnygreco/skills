@@ -1,0 +1,12 @@
+interface:
+  display_name: "Big Swing"
+  short_description: "Coordinate long goals with issues and PRs"
+  default_prompt: "Use $big-swing to accomplish a long-running goal with GitHub issues and PR review."
+
+dependencies:
+  tools:
+    - type: "mcp"
+      value: "github"
+      description: "GitHub issue and pull request access"
+      transport: "streamable_http"
+      url: "https://api.githubcopilot.com/mcp/"

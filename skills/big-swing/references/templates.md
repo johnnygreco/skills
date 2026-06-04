@@ -1,0 +1,90 @@
+# Big Swing Templates
+
+Copy-paste skeletons for the progress tracker issue, implementation issues, and pull requests. Fill every field; delete a line only when it genuinely does not apply, and explain why if that omission affects implementation or review.
+
+## Progress Tracker Issue
+
+Title: `Big swing: <goal>`
+
+```markdown
+## Goal
+<one-paragraph statement of the overall objective>
+
+## Shared Context
+<facts every implementation issue needs: architecture, conventions, key decisions>
+
+## Definition of Done
+<observable conditions that mean the whole goal is complete>
+
+## Validation Strategy
+<the exact commands every issue must run: test / lint / build / type-check>
+- test: `<command>`
+- lint: `<command>`
+- build: `<command>`
+
+## Risks
+<known risks and how we mitigate or watch them>
+
+## Issue Checklist (dependency order; replace draft titles with issue links)
+- [ ] <draft issue title>
+- [ ] #<issue-number> <short issue title>
+
+## Integration Notes
+<how the pieces fit together; cross-issue contracts>
+
+## Final Status
+<filled in during the Final Pass: summary, validation evidence, known risks>
+```
+
+## Implementation Issue
+
+Title: `<short imperative title>`
+
+```markdown
+## Objective
+<what this issue accomplishes and the expected outcome>
+
+## Context
+- Tracker: #<tracker-issue-number>
+- Self-contained context: <summarize enough architecture, conventions, decisions, and constraints to implement without hidden chat history>
+- Supporting links: <optional links to tracker sections, docs, files, designs, logs, or prior PRs>
+
+## Scope
+- In scope: <what to do>
+- Non-goals: <what explicitly NOT to do here>
+- Dependencies: <#issues that must merge first, or "none">
+- Sequencing: <where this sits in the order>
+
+## Implementation Notes
+<relevant files, APIs, commands, data contracts, design constraints>
+
+## Acceptance Criteria
+- [ ] <observable, testable condition>
+- [ ] <observable, testable condition>
+
+## Required Validation
+<commands to run and what a pass looks like; screenshots or logs when useful>
+
+## PR Expectations
+<anything the reviewer will need: screenshots, logs, perf numbers>
+```
+
+## Pull Request
+
+```markdown
+## Summary
+<what changed and why, in a few sentences>
+
+Closes #<issue-number>
+
+## Validation
+<exact commands run and their results>
+- test: `<command>` -> <result>
+- lint: `<command>` -> <result>
+
+## Risks
+<what could go wrong; blast radius; rollout/migration notes>
+
+## Reviewer Notes
+<where to focus; tricky decisions; anything intentionally out of scope>
+```
