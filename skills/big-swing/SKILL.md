@@ -8,7 +8,7 @@ metadata:
 
 # Big Swing
 
-Use GitHub as the durable coordination layer for a long-running goal. If the user explicitly names another issue-and-review system, adapt the same workflow there; otherwise use GitHub issues and PRs.
+Use GitHub as the durable coordination layer for a long-running goal. If the user explicitly names another issue-and-review system, adapt the same workflow there; otherwise use GitHub issues and PRs. For GitHub work, prefer the `gh` CLI for issue and PR operations; use another available GitHub interface only when `gh` is unavailable.
 
 ## Principles
 
