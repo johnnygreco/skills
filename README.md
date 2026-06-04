@@ -87,4 +87,4 @@ uvx --from skills-ref agentskills validate skills/SKILL_NAME
 
 ## License
 
-The repository is MIT licensed by default. A skill can include its own `LICENSE.txt` if it needs different terms.
+The repository is licensed under the Apache License, Version 2.0 by default. A skill can include its own `LICENSE.txt` if it needs different terms.
