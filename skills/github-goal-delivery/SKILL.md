@@ -16,7 +16,7 @@ Use GitHub as the required durable coordination layer for a long-running goal. T
 - One issue should be one independently implementable unit of work.
 - Issues are context delivery. A fresh agent should be able to implement an issue without hidden chat history; links supplement context but do not replace it.
 - PRs are the reviewer interface. An issue is not done until its PR has passed independent review and merged.
-- Keep PRs small enough to review deeply. Split or re-scope work that becomes diffuse.
+- Keep PRs small enough to review deeply. Split or re-scope work that becomes diffuse. Before opening a PR, sanity-check its size: if the diff is large (a useful rule of thumb is roughly 500+ changed lines or many touched files), reconsider splitting the issue first. When a PR is unavoidably large, say so explicitly in the reviewer notes and widen the review panel rather than letting a big diff get a thin review.
 - Keep the progress tracker issue authoritative: current plan, shared context, issue checklist, and final status.
 - Do not worry about backward compatibility unless explicitly told to. Do not add compatibility shims, preserve legacy behavior, or constrain the design for hypothetical old callers unless the user or tracker requires it.
 - Be willing to pursue a large goal when the plan is sound. Prefer the cohesive, modern solution over timid incremental patches; confidence must come from repo context, validation, and review.
@@ -29,11 +29,16 @@ Load `references/templates.md` when creating or updating the progress tracker, i
 
 - **Implementation issues in the tracker run sequentially.** Within the GitHub goal delivery program, design each implementation issue to build on the merged result of the previous one, then work one issue at a time in dependency order. Do not open parallel branches for separate implementation issues. This avoids conflicts between independent efforts inside the program; it does not assume the rest of the repository is frozen.
 - **Parallel agents within a single issue are allowed only when their work is separable.** Fan out research or implementation agents on the same issue when they can work without overlapping edits or competing decisions. One integration owner must combine their output into one branch, resolve contradictions, and confirm the PR is self-consistent and conflict-free. Keep the issue serial when agents would touch the same code or make competing design choices.
-- **Parallel reviewers are encouraged.** Independent review may use several reviewer agents at once, split across the Review Standard focus areas. Aggregate their findings before responding.
+- **Parallel reviewers are encouraged.** Independent review may use several reviewer agents at once, split across the Review Standard focus areas. Aggregate their findings before responding. Across a long multi-PR run, close out completed reviewer agents once their findings are captured so a limited subagent pool is not exhausted.
+- **Small process or guidance PRs may interrupt the sequence** only when they unblock the goal or prevent stale instructions from misleading later work (for example, correcting tracker or issue wording). Link them from the tracker, review and merge them like any other PR, then rebase and revalidate any open implementation PR before merging it.
 
 ## Review Standard
 
 Independent PR review must cover at least: code robustness, correctness, maintainability, complexity (strictly guard against over-engineering), test coverage, security, user/agent experience, and documentation when applicable.
+
+A multi-reviewer panel is the default. A single general reviewer is acceptable at the lead agent's discretion, but only for simple, narrow changes that one reviewer can fully digest and give meaningful feedback on across the applicable lenses. The larger or riskier the diff, the more the panel should be split across lenses; do not reduce a large or security-sensitive change to a single reviewer.
+
+Every PR must carry a **Review Record** before it merges; merging without one is a process violation. The record is what proves review happened and lets a later reader reproduce exactly what was reviewed. Load its shape from `references/templates.md` when you write one.
 
 ## Start
 
@@ -57,15 +62,15 @@ Each implementation issue must include the fields in the issue template (`refere
 
 Work issues one at a time. Select the next unchecked issue whose dependencies have all merged.
 
-1. Comment that work is starting, then create a focused branch using repo conventions.
+1. Reread the tracker, the issue body, and the merged dependency PRs before branching. Pre-created issues go stale; if source-of-truth, scope, non-goals, validation, or sequencing assumptions changed, update the issue body first. Then comment that work is starting and create a focused branch using repo conventions.
 2. Implement only the issue scope. Update tests, docs, README, comments, config, migrations, or examples when the change requires it. Optionally fan out parallel agents on this single issue per the Concurrency Model; one agent must integrate their output into the one branch and confirm it is self-consistent and conflict-free.
 3. Keep shared facts in the progress tracker when they affect later issues.
 4. Run the validation commands recorded at Start plus any issue-specific required validation, then note exact commands and results.
 5. Update the branch against the latest base, then open a PR linked to the issue using the PR template (`references/templates.md`): issue link, summary, validation, risks, and reviewer notes.
 6. Request comprehensive review from independent review agents that do not share this implementation's context. Use the review skill when available; otherwise spawn one or more fresh reviewer agents (see the parallel-reviewer pattern in the Concurrency Model). Do not self-approve.
 7. Address every finding with commits. If rejecting a finding, explain why in the PR and ask the reviewer to confirm.
-8. Repeat review until there are no unresolved findings and required checks pass.
-9. Merge according to repo policy, mark the implementation issue complete, and check it off in the progress tracker.
+8. Repeat review until there are no unresolved findings and required checks pass, then post the Review Record on the PR (`references/templates.md`).
+9. Confirm the PR carries a Review Record whose head SHA matches the current PR head and required checks are green, then merge according to repo policy, mark the implementation issue complete, and check it off in the progress tracker. Do not merge a PR that has no Review Record. After any post-review head change (review-fix commit, amend, rebase, force-push), the prior review and CI evidence is stale: rerun affected reviewers and validation on the new head, or record diff-equivalence, before merging.
 
 ## When Blocked
 
@@ -74,6 +79,7 @@ If progress stalls mid-cycle, do not silently abandon the work:
 - **Validation keeps failing:** capture the exact failing command and output in the tracker, fix forward, and only escalate to the user if the failure indicates a flawed plan rather than a code bug.
 - **PR cannot merge** (conflicts, red required checks): rebase or resolve against the latest base; if checks are red for reasons outside the issue scope, record it and decide whether to fix here or file a separate issue.
 - **Issue turns out mis-scoped or too large:** stop, split it into smaller issues in the tracker, re-derive dependency order, and resume.
+- **Independent review cannot run** (no subagent permission in this session, review skill unavailable, no reviewer access): do not merge the PR unreviewed and do not fall back to self-approval. Record the blocker in the tracker, leave the PR open, and ask the user to grant review/delegation access or decide how to proceed. An unreviewed merge is never the workaround.
 - **Missing access or an external decision is required:** record the blocker in the tracker and ask the user; do not work around it by guessing.
 
 ## Final Pass

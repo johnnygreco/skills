@@ -16,6 +16,7 @@ Run an independent, specialist review panel for substantive review work. The lea
 - Tailor the panel to the change. Do not mechanically spawn a fixed set of reviewers when fewer, broader, narrower, or different specialists would review the target better.
 - Keep reviewer agents independent. Start them with fresh context where possible; do not include implementation chat history, your private conclusions, or expected findings.
 - Run the panel concurrently. Spawn reviewers in parallel and blind to each other, then aggregate once they all return.
+- Close out reviewer subagents when done. If your harness uses persistent or pool-limited subagents, release each reviewer once you have captured its result, and close superseded reviewers from a prior round before spawning the next. If a spawn fails because the subagent limit is reached, close completed or stale reviewers and retry once before treating it as blocked.
 - Review a frozen target per round. Pin the change to a stable reference and give every reviewer in that round the same diff; after fixes, create a new frozen target for the next round.
 - Reviewer output is advisory. Verify findings by reading the actual code path, adjacent files, project standards, and external docs when relevant.
 - Prefer actionable findings over nits. Reject speculative risks, taste-only feedback, broad rewrites, and edge cases that do not matter for the target.
@@ -37,6 +38,7 @@ You know git; choose the commands yourself. This section defines *what* the revi
    - the change itself: branch, working-tree status, base/merge-base/head, commit list, changed files, diff stat, and the exact diff command to run
    - project context that should shape review: AGENTS.md, CONTRIBUTING, README, relevant docs, ADRs, specs, the issue/PR/spec description, CI config, and package/test manifests
    - validation already run, and the commands to run after fixes
+   - the accepted scope and known non-goals, so reviewers do not flag intentionally deferred behavior unless the current target creates a concrete blocker for it
 
 ## Review Panel
 
@@ -47,7 +49,10 @@ First design the panel:
 1. Inspect the target packet and changed files.
 2. Identify the risk surfaces: behavior, robustness, maintainability, complexity, tests, security, user experience, agent experience, documentation, APIs, data, operations, performance, or other domain concerns.
 3. Choose the smallest set of independent reviewers that covers the meaningful risks. Combine lenses for small diffs; split lenses when a risk is deep enough to deserve focused attention.
-4. Explicitly skip inapplicable lenses instead of spawning low-value reviewers. For example, documentation may be skipped when no user-visible behavior, API, workflow, or operational contract changed.
+4. Explicitly skip inapplicable lenses instead of spawning low-value reviewers. For example, documentation may be skipped when no user-visible behavior, API, workflow, or operational contract changed. Record which applicable lenses you skipped and why — an unexplained gap in coverage is itself a review weakness.
+5. Avoid redundant reviewer stacking. Three near-identical reviewers all on the data contract while correctness, tests, and security go unreviewed is wasted coverage. If you do put more than one reviewer on the same lens — useful for a deep, high-risk surface — give each a distinct subscope or state why the redundancy is intentional, and still cover the other applicable lenses.
+
+A multi-reviewer panel is the default. A single general reviewer is acceptable at the lead agent's discretion, but only for simple, narrow changes that one reviewer can fully digest and give meaningful feedback on across the applicable lenses. The larger or riskier the diff, the more the panel must split across lenses; never reduce a large, architectural, or security-sensitive change to a single reviewer.
 
 Typical panels are three to six reviewers, but the correct number depends on the diff. Examples:
 
@@ -68,7 +73,7 @@ Each reviewer prompt must include:
 
 ## Aggregation
 
-1. Wait for all reviewers.
+1. Wait for all reviewers. Treat each reviewer return as one incremental result, not panel completion — a non-timeout wait can mean a single reviewer finished. Do not aggregate, declare clean, or decide to merge until every expected reviewer has completed, timed out, or been deliberately superseded.
 2. Deduplicate findings by root cause, not by file.
 3. Verify each finding locally. Accept it only when it is concrete, actionable, and supported by the code or project requirements.
 4. Classify each finding as:
@@ -106,10 +111,12 @@ Panel review can loop or creep. Do not iterate blindly:
 
 Report:
 
-- review target and base
-- reviewer panel design and why those lenses were chosen or skipped
+- review target and base, as the frozen `base-ref base-sha..head-ref head-sha` plus the exact diff command, so a reader can reproduce exactly what was reviewed
+- reviewer panel design and why those lenses were chosen; always list applicable lenses that were skipped and the one-line reason for each
 - reviewers run, including reruns
 - accepted findings fixed
 - rejected findings with short rationale
 - validation commands and results
 - clean review status or the exact unresolved blocker
+
+When this review backs a github-goal-delivery PR, post the result in the Review Record shape from that skill's `references/templates.md` so review evidence is consistent across PRs.
