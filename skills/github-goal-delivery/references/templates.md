@@ -117,4 +117,4 @@ Validation after fixes:
 Final status: <all rerun reviewers clean | exact unresolved blocker>
 ```
 
-A single general reviewer is acceptable here at the lead agent's discretion for simple, narrow diffs; record it as a one-line panel with the lenses that reviewer covered. Larger or riskier diffs require a split panel.
+For a single-reviewer review (allowed for narrow diffs per the Review Standard), the panel is just one line.

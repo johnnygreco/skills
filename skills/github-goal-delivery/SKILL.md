@@ -37,7 +37,7 @@ Independent PR review must cover at least: code robustness, correctness, maintai
 
 A multi-reviewer panel is the default. A single general reviewer is acceptable at the lead agent's discretion, but only for simple, narrow changes that one reviewer can fully digest and give meaningful feedback on across the applicable lenses. The larger or riskier the diff, the more the panel should be split across lenses; do not reduce a large or security-sensitive change to a single reviewer.
 
-Every PR must carry a **Review Record** (see `references/templates.md`) before it merges: the frozen base..head SHAs reviewed, the reviewers and their lenses, accepted findings fixed, rejected findings with reasons, and the final clean status. A PR merged without a Review Record is a process violation — the record is what proves review actually happened and what a later reader uses to reproduce exactly what was reviewed.
+Every PR must carry a **Review Record** before it merges; merging without one is a process violation. The record is what proves review happened and lets a later reader reproduce exactly what was reviewed. Load its shape from `references/templates.md` when you write one.
 
 ## Start
 
