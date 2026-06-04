@@ -1,0 +1,4 @@
+interface:
+  display_name: "GitHub Goal Delivery"
+  short_description: "Deliver long goals through GitHub"
+  default_prompt: "Use $github-goal-delivery to coordinate a long-running goal through GitHub issues and PR review."

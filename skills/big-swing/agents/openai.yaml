@@ -1,4 +1,0 @@
-interface:
-  display_name: "Big Swing"
-  short_description: "Coordinate long goals with issues and PRs"
-  default_prompt: "Use $big-swing to coordinate a long-running goal through GitHub issues and PR review."

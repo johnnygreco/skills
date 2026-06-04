@@ -1,10 +1,10 @@
-# Big Swing Templates
+# GitHub Goal Delivery Templates
 
 Copy-paste skeletons for the progress tracker issue, implementation issues, and pull requests. Fill every field; delete a line only when it genuinely does not apply, and explain why if that omission affects implementation or review.
 
 ## Progress Tracker Issue
 
-Title: `Big swing: <goal>`
+Title: `GitHub goal delivery: <goal>`
 
 ```markdown
 ## Goal

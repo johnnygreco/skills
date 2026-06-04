@@ -1,14 +1,14 @@
 ---
-name: big-swing
+name: github-goal-delivery
 description: >-
-  Use when the user asks an agent to complete a large, long-running, or multi-PR goal coordinated through GitHub issues as the task tracker and pull requests as the reviewer interface. Guides decomposition into self-contained issues, sequential implementation PRs, independent review, and final holistic review.
+  Use when the user asks an agent to complete a long-running, long-horizon, or multi-PR goal using GitHub issues as the durable tracker and pull requests as the reviewer interface. Requires GitHub issue and PR access. Guides decomposition into self-contained issues, sequential implementation PRs, independent review, and final holistic review.
 metadata:
-  short-description: Coordinate long goals with issues and PRs
+  short-description: Deliver long goals through GitHub
 ---
 
-# Big Swing
+# GitHub Goal Delivery
 
-Use GitHub as the durable coordination layer for a long-running goal. If the user explicitly names another issue-and-review system, adapt the same workflow there; otherwise use GitHub issues and PRs. For GitHub work, prefer the `gh` CLI for issue and PR operations; use another available GitHub interface only when `gh` is unavailable.
+Use GitHub as the required durable coordination layer for a long-running goal. This skill requires a GitHub remote plus issue and PR access; if those are unavailable, record the blocker and ask for access rather than adapting to another tracker. Prefer the `gh` CLI for issue and PR operations; use another available GitHub interface only when `gh` is unavailable.
 
 ## Principles
 
@@ -19,7 +19,7 @@ Use GitHub as the durable coordination layer for a long-running goal. If the use
 - Keep PRs small enough to review deeply. Split or re-scope work that becomes diffuse.
 - Keep the progress tracker issue authoritative: current plan, shared context, issue checklist, and final status.
 - Do not worry about backward compatibility unless explicitly told to. Do not add compatibility shims, preserve legacy behavior, or constrain the design for hypothetical old callers unless the user or tracker requires it.
-- Be willing to take a big swing when the plan is sound. Prefer the cohesive, modern solution over timid incremental patches; confidence must come from repo context, validation, and review.
+- Be willing to pursue a large goal when the plan is sound. Prefer the cohesive, modern solution over timid incremental patches; confidence must come from repo context, validation, and review.
 
 ## Templates
 
@@ -27,7 +27,7 @@ Load `references/templates.md` when creating or updating the progress tracker, i
 
 ## Concurrency Model
 
-- **Implementation issues in the tracker run sequentially.** Within the big-swing program, design each implementation issue to build on the merged result of the previous one, then work one issue at a time in dependency order. Do not open parallel branches for separate implementation issues. This avoids conflicts between independent efforts inside the program; it does not assume the rest of the repository is frozen.
+- **Implementation issues in the tracker run sequentially.** Within the GitHub goal delivery program, design each implementation issue to build on the merged result of the previous one, then work one issue at a time in dependency order. Do not open parallel branches for separate implementation issues. This avoids conflicts between independent efforts inside the program; it does not assume the rest of the repository is frozen.
 - **Parallel agents within a single issue are allowed only when their work is separable.** Fan out research or implementation agents on the same issue when they can work without overlapping edits or competing decisions. One integration owner must combine their output into one branch, resolve contradictions, and confirm the PR is self-consistent and conflict-free. Keep the issue serial when agents would touch the same code or make competing design choices.
 - **Parallel reviewers are encouraged.** Independent review may use several reviewer agents at once, split across the Review Standard focus areas. Aggregate their findings before responding.
 
@@ -38,7 +38,7 @@ Independent PR review must cover at least: code robustness, correctness, maintai
 ## Start
 
 1. Verify repository, GitHub remote, issue access, PR access, and branch/merge conventions. If any are unavailable, record the blocker and ask for the missing access or decision.
-2. Create or reuse one progress tracker issue titled `Big swing: <goal>` with the tracker template.
+2. Create or reuse one progress tracker issue titled `GitHub goal delivery: <goal>` with the tracker template.
 3. Discover the project's validation commands up front (test, lint, build, type-check) and record them in the tracker so every issue validates against the same baseline.
 4. Put in the tracker: goal, shared context, definition of done, risks, validation strategy, draft issue plan, and integration notes.
 5. Create implementation issues from the draft plan, in dependency order.

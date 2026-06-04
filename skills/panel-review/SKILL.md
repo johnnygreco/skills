@@ -1,26 +1,26 @@
 ---
-name: deep-review
+name: panel-review
 description: >-
-  Run a final, multi-agent code review before a PR or branch is considered ready to merge. Use when the user asks for deep review, merge-readiness review, final PR review, review until clean, or specialist review agents, or when an agent has finished non-trivial implementation work and should independently check robustness, correctness, maintainability, complexity, tests, security, user or agent experience, documentation, and integration risks before finalizing.
+  Run a deep, multi-agent expert panel review of a PR, branch, design, or substantial change. Use when the user asks for panel review, deep review, multi-agent review, specialist reviewers, merge-readiness review, review until clean, or independent checks across robustness, correctness, maintainability, complexity, tests, security, user or agent experience, documentation, and integration risks.
 metadata:
-  short-description: Multi-agent final PR review
+  short-description: Expert-panel deep review
 ---
 
-# Deep Review
+# Panel Review
 
-Run an independent, specialist review panel as the last step before merge. The lead agent designs the reviewer mix for the specific change, then owns the outcome: verify every finding against the real code, fix accepted issues, rerun validation, and repeat review until no accepted findings remain.
+Run an independent, specialist review panel for substantive review work. The lead agent designs the reviewer mix for the target, then owns the outcome: verify every finding against the real code, fix accepted issues, rerun validation, and repeat review until no accepted findings remain.
 
 ## Contract
 
-- Use subagents. If no subagent tool is available, say that deep-review requires subagents and do not replace it with a single self-review.
-- Tailor the panel to the change. Do not mechanically spawn a fixed set of reviewers when fewer, broader, narrower, or different specialists would review the PR better.
+- Use subagents. If no subagent tool is available, say that panel-review requires subagents and do not replace it with a single self-review.
+- Tailor the panel to the change. Do not mechanically spawn a fixed set of reviewers when fewer, broader, narrower, or different specialists would review the target better.
 - Keep reviewer agents independent. Start them with fresh context where possible; do not include implementation chat history, your private conclusions, or expected findings.
 - Run the panel concurrently. Spawn reviewers in parallel and blind to each other, then aggregate once they all return.
 - Review a frozen target per round. Pin the change to a stable reference and give every reviewer in that round the same diff; after fixes, create a new frozen target for the next round.
 - Reviewer output is advisory. Verify findings by reading the actual code path, adjacent files, project standards, and external docs when relevant.
-- Prefer actionable findings over nits. Reject speculative risks, taste-only feedback, broad rewrites, and edge cases that do not matter for the PR.
+- Prefer actionable findings over nits. Reject speculative risks, taste-only feedback, broad rewrites, and edge cases that do not matter for the target.
 - Guard strictly against over-engineering. Treat needless abstraction, cleverness, generic machinery, duplicated concepts, or extra moving parts as review-worthy only when they materially hurt the code's future maintainability.
-- Fix accepted findings at the right ownership boundary. When one finding reveals a repeated bug class, inspect sibling instances in the PR scope.
+- Fix accepted findings at the right ownership boundary. When one finding reveals a repeated bug class, inspect sibling instances in the target scope.
 - Rerun the relevant reviewers after review-triggered code changes. Continue until all accepted findings are fixed or consciously rejected and the final pass reports no accepted findings.
 - Do not push only to run this skill. Push or update a PR only when the user asked for that.
 
@@ -74,7 +74,7 @@ Each reviewer prompt must include:
 4. Classify each finding as:
    - `accepted`: fix now
    - `rejected`: explain why it is intentional, speculative, out of scope, or not a real risk
-   - `follow-up`: real but outside this PR's merge bar
+   - `follow-up`: real but outside the requested review scope
 5. Fix accepted findings, then run focused validation and any broad validation required by the repository.
 
 ## Iteration
@@ -95,9 +95,9 @@ Stop only when:
 
 ## When Review Does Not Converge
 
-Deep review can loop or creep. Do not iterate blindly:
+Panel review can loop or creep. Do not iterate blindly:
 
-- If a fix would exceed this PR's scope or change architecture, public behavior, or security posture, stop and surface it to the user rather than growing the diff inside the review.
+- If a fix would exceed this target's scope or change architecture, public behavior, or security posture, stop and surface it to the user rather than growing the diff inside the review.
 - If new accepted findings keep appearing across rounds with no sign of settling, pause, summarize what is and is not resolved, and ask the user how to proceed.
 - If two reviewers give conflicting guidance, the lead decides, records the rationale, and does not relitigate it in later rounds.
 - Do not run an extra round just to produce a cleaner report. Once a pass returns no accepted findings, that pass is the result.
@@ -112,4 +112,4 @@ Report:
 - accepted findings fixed
 - rejected findings with short rationale
 - validation commands and results
-- final clean review status or the exact unresolved blocker
+- clean review status or the exact unresolved blocker

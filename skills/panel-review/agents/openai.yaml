@@ -1,0 +1,4 @@
+interface:
+  display_name: "Panel Review"
+  short_description: "Expert-panel deep review"
+  default_prompt: "Use $panel-review to run a deep expert-panel review of this change and iterate on accepted fixes until clean."
