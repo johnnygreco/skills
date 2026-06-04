@@ -18,6 +18,8 @@ Use GitHub as the durable coordination layer for a long-running goal. If the use
 - PRs are the reviewer interface. An issue is not done until its PR has passed independent review and merged.
 - Keep PRs small enough to review deeply. Split or re-scope work that becomes diffuse.
 - Keep the progress tracker issue authoritative: current plan, shared context, issue checklist, and final status.
+- Do not worry about backward compatibility unless explicitly told to. Do not add compatibility shims, preserve legacy behavior, or constrain the design for hypothetical old callers unless the user or tracker requires it.
+- Be willing to take a big swing when the plan is sound. Prefer the cohesive, modern solution over timid incremental patches; confidence must come from repo context, validation, and review.
 
 ## Templates
 
@@ -27,7 +29,11 @@ Load `references/templates.md` when creating or updating the progress tracker, i
 
 - **Implementation issues in the tracker run sequentially.** Within the big-swing program, design each implementation issue to build on the merged result of the previous one, then work one issue at a time in dependency order. Do not open parallel branches for separate implementation issues. This avoids conflicts between independent efforts inside the program; it does not assume the rest of the repository is frozen.
 - **Parallel agents within a single issue are allowed only when their work is separable.** Fan out research or implementation agents on the same issue when they can work without overlapping edits or competing decisions. One integration owner must combine their output into one branch, resolve contradictions, and confirm the PR is self-consistent and conflict-free. Keep the issue serial when agents would touch the same code or make competing design choices.
-- **Parallel reviewers are encouraged.** Independent review may use several reviewer agents at once, each focused on one part of the change (e.g. correctness, tests, security, docs, migration safety). Aggregate their findings before responding.
+- **Parallel reviewers are encouraged.** Independent review may use several reviewer agents at once, split across the Review Standard focus areas. Aggregate their findings before responding.
+
+## Review Standard
+
+Independent PR review must cover at least: code robustness, correctness, maintainability, complexity (strictly guard against over-engineering), test coverage, security, user/agent experience, and documentation when applicable.
 
 ## Start
 
@@ -75,7 +81,7 @@ If progress stalls mid-cycle, do not silently abandon the work:
 After all planned PRs have merged:
 
 1. Re-read the progress tracker, issues, PRs, and final diff as one solution.
-2. Perform a deep holistic review for cohesion, unnecessary complexity, duplicated abstractions, integration gaps, test coverage, documentation, comments, README updates, operational notes, and migration or rollout concerns. Parallel reviewers focused on different concerns are encouraged here.
+2. Perform a deep holistic review against the Review Standard, plus integration cohesion, duplicated abstractions, documentation, comments, README updates, operational notes, and removal of any compatibility work added without an explicit requirement. Parallel reviewers focused on different concerns are encouraged here.
 3. Run broad validation using the recorded commands, plus any end-to-end checks appropriate to the repository.
 4. If gaps remain, create follow-up issues and run the same issue-to-PR-to-review cycle.
 5. When the solution is cohesive and validated, update the progress tracker with the final summary, validation evidence, and remaining known risks, then complete the harness goal.

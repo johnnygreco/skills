@@ -11,7 +11,7 @@ Title: `Big swing: <goal>`
 <one-paragraph statement of the overall objective>
 
 ## Shared Context
-<facts every implementation issue needs: architecture, conventions, key decisions>
+<facts every implementation issue needs: architecture, conventions, key decisions; state "backward compatibility is not required" unless the user explicitly required it>
 
 ## Definition of Done
 <observable conditions that mean the whole goal is complete>
@@ -52,6 +52,7 @@ Title: `<short imperative title>`
 ## Scope
 - In scope: <what to do>
 - Non-goals: <what explicitly NOT to do here>
+- Backward compatibility: do not worry about it unless explicitly specified; do not preserve legacy behavior or add shims by default
 - Dependencies: <#issues that must merge first, or "none">
 - Sequencing: <where this sits in the order>
 
@@ -86,5 +87,5 @@ Closes #<issue-number>
 <what could go wrong; blast radius; rollout/migration notes>
 
 ## Reviewer Notes
-<where to focus; tricky decisions; anything intentionally out of scope>
+<where to focus; tricky decisions; anything intentionally out of scope; state whether backward compatibility was explicitly required>
 ```
