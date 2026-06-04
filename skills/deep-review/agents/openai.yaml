@@ -1,0 +1,4 @@
+interface:
+  display_name: "Deep Review"
+  short_description: "Multi-agent final PR review"
+  default_prompt: "Use $deep-review to tailor a final multi-agent review of this PR and iterate on fixes until clean."
