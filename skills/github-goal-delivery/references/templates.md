@@ -2,6 +2,8 @@
 
 Copy-paste skeletons for the progress tracker issue, implementation issues, and pull requests. Fill every field; delete a line only when it genuinely does not apply, and explain why if that omission affects implementation or review.
 
+When a GitHub body or comment contains multiline markdown, backticks, `$`, quotes, or command output, write it from a file or API input rather than an inline shell string, then reread the created body to confirm sections, links, and closing references survived. The tracker and issues are durable state; a corrupted body silently breaks handoff.
+
 ## Progress Tracker Issue
 
 Title: `GitHub goal delivery: <goal>`
@@ -9,6 +11,15 @@ Title: `GitHub goal delivery: <goal>`
 ```markdown
 ## Goal
 <one-paragraph statement of the overall objective>
+
+## Source Of Truth
+Governing sources, in order, when instructions conflict:
+1. Active user goal and explicit user corrections.
+2. This progress tracker.
+3. The active implementation issue or PR scope.
+4. Named plan/spec/design docs.
+5. Repo docs, local skills, and historical behavior.
+Record any material conflict and the chosen precedence here.
 
 ## Shared Context
 <facts every implementation issue needs: architecture, conventions, key decisions; state "backward compatibility is not required" unless the user explicitly required it>
@@ -31,6 +42,15 @@ Title: `GitHub goal delivery: <goal>`
 
 ## Integration Notes
 <how the pieces fit together; cross-issue contracts>
+
+## Current State
+<the live pointer for handoff; refresh after issue start, PR open, review completion, any post-review head change, merge, and blocker discovery. Issue numbers and PR URLs alone do not identify which exact code was reviewed or merged.>
+- Active issue / branch / PR:
+- Active PR head SHA and base SHA:
+- Last merged issue / PR / SHA:
+- Review and CI status:
+- Blockers:
+- Next action:
 
 ## Final Status
 <filled in during the Final Pass: summary, validation evidence, known risks>

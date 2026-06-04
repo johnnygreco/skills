@@ -34,6 +34,8 @@ If there are no findings, return `Verdict: clean` and omit the findings list.
 - Do not edit files.
 - Do not approve based only on tests passing.
 - Do not flag issues that existing tooling already enforces unless the tooling is missing or misconfigured.
+- Flag compatibility breaks only when the user asked for backward compatibility or the target packet states compatibility is in scope.
+- Do not flag intentionally deferred behavior named as a non-goal unless the current target creates a concrete blocker for it.
 
 ## Core Lenses
 
@@ -51,7 +53,7 @@ Prefer feedback that simplifies the model, removes moving parts, or moves logic 
 
 ### Tests And Coverage
 
-Look for missing tests around changed behavior, regressions, permissions, edge cases, error paths, migrations, and integration points. Check whether tests assert behavior instead of implementation details, whether mocks or snapshots hide the real risk, and whether relevant validation was rerun after fixes.
+Look for missing tests around changed behavior, regressions, permissions, edge cases, error paths, migrations, and integration points. Check whether tests assert behavior instead of implementation details, whether mocks or snapshots hide the real risk, and whether relevant validation was rerun after fixes. A test for a required case should fail if that case is removed; be wary of expected values derived from the same implementation constant they are meant to guard.
 
 ### Security And Privacy
 
@@ -87,8 +89,12 @@ Review public APIs, SDKs, generated types, backwards compatibility, request and 
 
 ### Integration And Operations
 
-Review deployment safety, rollouts, feature gates, cache invalidation, rollback behavior, observability, environment assumptions, packaging, generated artifacts, queues, events, and downstream compatibility.
+Review deployment safety, rollouts, feature gates, cache invalidation, rollback behavior, observability, environment assumptions, packaging, generated artifacts, queues, events, and downstream compatibility. For release/packaging changes, inspect the actual publish path and the produced artifact's tags, metadata, and target-registry constraints; a green local build or metadata lint does not prove the artifact is publishable.
 
 ### Dependency And Supply Chain
 
 Review new or changed dependencies, lockfiles, build scripts, code generation, package provenance, permissions, maintenance risk, and license concerns.
+
+### Native Extensions And FFI Boundaries
+
+For native extensions, FFI, plugins, generated bindings, or host-language integration, review user-controlled sizes, allocation and growth/reserve paths, panic/error translation, and resource limits. A panic wrapper does not cover every abort or out-of-memory path; exposed constructors and capacity APIs should use bounded or fallible allocation and surface host-language errors rather than crashing the process.

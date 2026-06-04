@@ -37,6 +37,7 @@ You know git; choose the commands yourself. This section defines *what* the revi
    - the change itself: branch, working-tree status, base/merge-base/head, commit list, changed files, diff stat, and the exact diff command to run
    - project context that should shape review: AGENTS.md, CONTRIBUTING, README, relevant docs, ADRs, specs, the issue/PR/spec description, CI config, and package/test manifests
    - validation already run, and the commands to run after fixes
+   - the accepted scope and known non-goals, so reviewers do not flag intentionally deferred behavior unless the current target creates a concrete blocker for it
 
 ## Review Panel
 
@@ -71,7 +72,7 @@ Each reviewer prompt must include:
 
 ## Aggregation
 
-1. Wait for all reviewers.
+1. Wait for all reviewers. Treat each reviewer return as one incremental result, not panel completion — a non-timeout wait can mean a single reviewer finished. Do not aggregate, declare clean, or decide to merge until every expected reviewer has completed, timed out, or been deliberately superseded.
 2. Deduplicate findings by root cause, not by file.
 3. Verify each finding locally. Accept it only when it is concrete, actionable, and supported by the code or project requirements.
 4. Classify each finding as:

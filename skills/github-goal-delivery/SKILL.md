@@ -30,6 +30,7 @@ Load `references/templates.md` when creating or updating the progress tracker, i
 - **Implementation issues in the tracker run sequentially.** Within the GitHub goal delivery program, design each implementation issue to build on the merged result of the previous one, then work one issue at a time in dependency order. Do not open parallel branches for separate implementation issues. This avoids conflicts between independent efforts inside the program; it does not assume the rest of the repository is frozen.
 - **Parallel agents within a single issue are allowed only when their work is separable.** Fan out research or implementation agents on the same issue when they can work without overlapping edits or competing decisions. One integration owner must combine their output into one branch, resolve contradictions, and confirm the PR is self-consistent and conflict-free. Keep the issue serial when agents would touch the same code or make competing design choices.
 - **Parallel reviewers are encouraged.** Independent review may use several reviewer agents at once, split across the Review Standard focus areas. Aggregate their findings before responding.
+- **Small process or guidance PRs may interrupt the sequence** only when they unblock the goal or prevent stale instructions from misleading later work (for example, correcting tracker or issue wording). Link them from the tracker, review and merge them like any other PR, then rebase and revalidate any open implementation PR before merging it.
 
 ## Review Standard
 
@@ -61,7 +62,7 @@ Each implementation issue must include the fields in the issue template (`refere
 
 Work issues one at a time. Select the next unchecked issue whose dependencies have all merged.
 
-1. Comment that work is starting, then create a focused branch using repo conventions.
+1. Reread the tracker, the issue body, and the merged dependency PRs before branching. Pre-created issues go stale; if source-of-truth, scope, non-goals, validation, or sequencing assumptions changed, update the issue body first. Then comment that work is starting and create a focused branch using repo conventions.
 2. Implement only the issue scope. Update tests, docs, README, comments, config, migrations, or examples when the change requires it. Optionally fan out parallel agents on this single issue per the Concurrency Model; one agent must integrate their output into the one branch and confirm it is self-consistent and conflict-free.
 3. Keep shared facts in the progress tracker when they affect later issues.
 4. Run the validation commands recorded at Start plus any issue-specific required validation, then note exact commands and results.
@@ -69,7 +70,7 @@ Work issues one at a time. Select the next unchecked issue whose dependencies ha
 6. Request comprehensive review from independent review agents that do not share this implementation's context. Use the review skill when available; otherwise spawn one or more fresh reviewer agents (see the parallel-reviewer pattern in the Concurrency Model). Do not self-approve.
 7. Address every finding with commits. If rejecting a finding, explain why in the PR and ask the reviewer to confirm.
 8. Repeat review until there are no unresolved findings and required checks pass, then post the Review Record on the PR (`references/templates.md`).
-9. Confirm the PR carries a Review Record and required checks are green, then merge according to repo policy, mark the implementation issue complete, and check it off in the progress tracker. Do not merge a PR that has no Review Record.
+9. Confirm the PR carries a Review Record whose head SHA matches the current PR head and required checks are green, then merge according to repo policy, mark the implementation issue complete, and check it off in the progress tracker. Do not merge a PR that has no Review Record. After any post-review head change (review-fix commit, amend, rebase, force-push), the prior review and CI evidence is stale: rerun affected reviewers and validation on the new head, or record diff-equivalence, before merging.
 
 ## When Blocked
 
