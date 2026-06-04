@@ -47,7 +47,10 @@ First design the panel:
 1. Inspect the target packet and changed files.
 2. Identify the risk surfaces: behavior, robustness, maintainability, complexity, tests, security, user experience, agent experience, documentation, APIs, data, operations, performance, or other domain concerns.
 3. Choose the smallest set of independent reviewers that covers the meaningful risks. Combine lenses for small diffs; split lenses when a risk is deep enough to deserve focused attention.
-4. Explicitly skip inapplicable lenses instead of spawning low-value reviewers. For example, documentation may be skipped when no user-visible behavior, API, workflow, or operational contract changed.
+4. Explicitly skip inapplicable lenses instead of spawning low-value reviewers. For example, documentation may be skipped when no user-visible behavior, API, workflow, or operational contract changed. Record which applicable lenses you skipped and why — an unexplained gap in coverage is itself a review weakness.
+5. Do not stack multiple reviewers on the same lens. Three reviewers all looking at, say, the data contract is redundant coverage that leaves correctness, tests, and security unreviewed. If one concern is deep, give it one focused reviewer and spend the others on the remaining risk surfaces.
+
+A multi-reviewer panel is the default. A single general reviewer is acceptable at the lead agent's discretion, but only for simple, narrow changes that one reviewer can fully digest and give meaningful feedback on across the applicable lenses. The larger or riskier the diff, the more the panel must split across lenses; never reduce a large, architectural, or security-sensitive change to a single reviewer.
 
 Typical panels are three to six reviewers, but the correct number depends on the diff. Examples:
 
@@ -106,10 +109,12 @@ Panel review can loop or creep. Do not iterate blindly:
 
 Report:
 
-- review target and base
-- reviewer panel design and why those lenses were chosen or skipped
+- review target and base, as the frozen `base-ref base-sha..head-ref head-sha` plus the exact diff command, so a reader can reproduce exactly what was reviewed
+- reviewer panel design and why those lenses were chosen; always list applicable lenses that were skipped and the one-line reason for each
 - reviewers run, including reruns
 - accepted findings fixed
 - rejected findings with short rationale
 - validation commands and results
 - clean review status or the exact unresolved blocker
+
+When this review backs a github-goal-delivery PR, post the result in the Review Record shape from that skill's `references/templates.md` so review evidence is consistent across PRs.

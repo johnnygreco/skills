@@ -89,3 +89,32 @@ Closes #<issue-number>
 ## Reviewer Notes
 <where to focus; tricky decisions; anything intentionally out of scope; state whether backward compatibility was explicitly required>
 ```
+
+## Review Record
+
+Post this on the PR once review converges, before merge. It is the durable proof that review happened and lets a later reader reproduce exactly what was reviewed. Use this single shape whether the review came from the panel-review skill or from fresh reviewer agents.
+
+```markdown
+## Review Record
+
+Frozen target: `<base-ref> <base-sha>..<head-ref> <head-sha>`
+Diff command: `<exact command that reproduces the reviewed diff>`
+
+Panel:
+- <reviewer name>: <lenses> -> clean | findings
+- <reviewer name>: <lenses> -> clean | findings
+Skipped Review-Standard lenses: <lens — one-line reason each, or "none">
+
+Accepted findings fixed:
+- <finding -> fix>
+
+Rejected findings:
+- <finding -> why rejected (intentional / speculative / out of scope)>
+
+Validation after fixes:
+- <command> -> <result>
+
+Final status: <all rerun reviewers clean | exact unresolved blocker>
+```
+
+A single general reviewer is acceptable here at the lead agent's discretion for simple, narrow diffs; record it as a one-line panel with the lenses that reviewer covered. Larger or riskier diffs require a split panel.
