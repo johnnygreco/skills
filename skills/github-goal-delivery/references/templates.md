@@ -25,7 +25,7 @@ Record any material conflict and the chosen precedence here.
 <facts every implementation issue needs: architecture, conventions, key decisions; state "backward compatibility is not required" unless the user explicitly required it>
 
 ## Definition of Done
-<observable conditions that mean the whole goal is complete>
+<observable conditions that mean the whole goal is complete; state whether release, publish, README, and user-facing docs are in or out of scope>
 
 ## Validation Strategy
 <the exact commands every issue must run: test / lint / build / type-check>
@@ -72,7 +72,7 @@ Title: `<short imperative title>`
 ## Scope
 - In scope: <what to do>
 - Non-goals: <what explicitly NOT to do here>
-- Backward compatibility: do not worry about it unless explicitly specified; do not preserve legacy behavior or add shims by default
+- Backward compatibility: do not worry about it unless explicitly specified; do not preserve legacy behavior, add shims, or frame work as legacy support by default
 - Dependencies: <#issues that must merge first, or "none">
 - Sequencing: <where this sits in the order>
 
