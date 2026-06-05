@@ -84,7 +84,7 @@ Each reviewer prompt must include:
 
 ## Iteration
 
-After any fix caused by the review:
+After any fix caused by the review, batch accepted findings for the target into one fix pass before re-review; do not fix one finding and rerun one reviewer at a time. Finish one target's review loop before starting another's, rather than interleaving reruns across multiple PRs.
 
 1. Create a fresh frozen target packet so reviewers see the updated diff.
 2. Rerun every reviewer whose finding led to a fix.
