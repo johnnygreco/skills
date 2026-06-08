@@ -1,20 +1,18 @@
 # Agent Skills
 
-A small, evolving set of agent skills I'm actively experimenting with. Each one packages a focused workflow — instructions, and any scripts or references an agent needs — so a capable agent can pick it up and run with it.
+A small, evolving set of agent skills I'm actively experimenting with.
 
-These follow the [Agent Skills specification](https://agentskills.io/specification) and work with Claude Code, Codex, and other compatible agents.
-
-> Consider these experimental. They change as I learn what works.
+The skills follow the [Agent Skills specification](https://agentskills.io/specification) and work with Claude Code, Codex, and other compatible agents.
 
 ## Install
 
-Install with the [Skills CLI](https://skills.sh):
+Use the [Skills CLI](https://skills.sh):
 
 ```bash
 npx skills add johnnygreco/skills
 ```
 
-It walks you through selecting which skills to install, whether to install them for the current project or globally, and which agent harnesses to set them up for.
+The CLI asks which skills to install, where to install them, and which agent tools to configure.
 
 To browse or update later:
 
@@ -27,12 +25,12 @@ npx skills update    # update installed skills
 
 | Skill | What it does | When to use | Docs |
 | --- | --- | --- | --- |
-| [`panel-review`](skills/panel-review) | Runs an independent, multi-agent expert panel that reviews a change across robustness, correctness, maintainability, complexity, tests, security, and more — then fixes accepted findings and re-reviews until clean. | You want a deep, merge-readiness review of a PR, branch, design, or substantial change — beyond a single-pass look. | [Example: GitHub goal delivery with panel review](docs/github-goal-delivery-with-panel-review.md) |
-| [`github-goal-delivery`](skills/github-goal-delivery) | Drives a long-horizon, multi-PR goal using GitHub issues as the durable tracker and pull requests as the reviewer interface: decompose into self-contained issues, ship sequential PRs, review independently, then review holistically. | You're handing an agent a big goal that spans many PRs and needs durable tracking and review. Requires GitHub issue and PR access. | [Example: GitHub goal delivery with panel review](docs/github-goal-delivery-with-panel-review.md) |
+| [`panel-review`](skills/panel-review) | Runs specialist reviewers against a PR, branch, design, or substantial change, then fixes accepted findings and re-reviews until clean. | Before merging work where a single review pass is likely to miss something important. | [Example: GitHub goal delivery with panel review](docs/github-goal-delivery-with-panel-review.md) |
+| [`github-goal-delivery`](skills/github-goal-delivery) | Breaks a larger GitHub-backed goal into tracked issues and focused PRs, with review gates along the way and a final pass over the whole result. | For work large enough to need GitHub issues and PRs as durable state. Requires issue and PR access. | [Example: GitHub goal delivery with panel review](docs/github-goal-delivery-with-panel-review.md) |
 
 ## Contributing & authoring
 
-Authoring conventions, layout rules, and validation steps live in [AGENTS.md](AGENTS.md) — read that before adding or editing a skill.
+See [AGENTS.md](AGENTS.md) for layout rules and validation before adding or editing a skill.
 
 ## License
 
