@@ -38,7 +38,7 @@ You know git; choose the commands yourself. This section defines *what* the revi
    - the change itself: branch, working-tree status, base/merge-base/head, commit list, changed files, diff stat, and the exact diff command to run
    - project context that should shape review: AGENTS.md, CONTRIBUTING, README, relevant docs, ADRs, specs, the issue/PR/spec description, CI config, and package/test manifests
    - validation already run, and the commands to run after fixes
-   - the accepted scope and known non-goals, so reviewers do not flag intentionally deferred behavior unless the current target creates a concrete blocker for it
+   - the accepted scope, known non-goals, and the **ambition ceiling**: what "done" means for this target and the severity bar to apply. State it explicitly (e.g. "this is personal-production scope; do not propose enterprise/multi-tenant/maximalist hardening unless the diff creates a concrete blocker"). When the ceiling is unstated, reviewers default to maximalist hardening and escalate scope, which wastes a whole round.
 
 ## Review Panel
 
@@ -66,7 +66,7 @@ Each reviewer prompt must include:
 - the target packet
 - relevant context file paths
 - the selected lenses and any relevant guidance from `references/review-lenses.md`
-- the reviewer's scope, exclusions, and severity bar
+- the reviewer's scope, exclusions, severity bar, and the target's ambition ceiling
 - instructions to inspect code and run read-only commands as needed
 - instructions not to edit files
 - the required output format from `references/review-lenses.md`
