@@ -2,6 +2,8 @@
 
 `github-goal-delivery` coordinates a long-running goal through issues and PRs. `panel-review` supplies independent specialist review for each PR before it merges.
 
+> Warning: this workflow can burn a lot of tokens. The cost grows quickly when `panel-review` uses several specialist reviewers and runs multiple review/fix/re-review iterations for each PR.
+
 ```text
 +-----------------------------+
 | Big goal                    |
