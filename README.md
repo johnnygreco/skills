@@ -1,90 +1,39 @@
 # Agent Skills
 
-Public catalog of reusable agent skills.
+A small, evolving set of agent skills I'm actively experimenting with. Each one packages a focused workflow — instructions, and any scripts or references an agent needs — so a capable agent can pick it up and run with it.
 
-Skills in this repository follow the [Agent Skills specification](https://agentskills.io/specification) and are intended for Codex and other compatible agents. Each skill is a focused folder of instructions, optional scripts, references, and assets.
+These follow the [Agent Skills specification](https://agentskills.io/specification) and work with Claude Code, Codex, and other compatible agents.
 
-## Repository Layout
+> Consider these experimental. They change as I learn what works.
 
-```text
-skills/
-  skill-name/
-    SKILL.md
-    agents/openai.yaml
-    scripts/
-    references/
-    assets/
-```
+## Install
 
-- `skills/<skill-name>/`: one reusable skill per directory.
-- `agents/openai.yaml`: optional Codex UI metadata, invocation policy, and tool dependency declarations.
-
-## Installing Skills
-
-After this repository is published, install a skill by pointing your agent at the skill folder.
-
-For Codex, ask the installer skill to install the GitHub skill folder:
-
-```text
-Use $skill-installer to install https://github.com/OWNER/REPOSITORY/tree/main/skills/SKILL_NAME
-```
-
-For GitHub Copilot CLI, once skills are published through GitHub's skill flow:
+Install with the [Skills CLI](https://skills.sh):
 
 ```bash
-gh skill preview OWNER/REPOSITORY SKILL_NAME
-gh skill install OWNER/REPOSITORY SKILL_NAME
+npx skills add johnnygreco/skills
 ```
 
-For manual local use, copy or symlink a skill directory into one of the locations supported by your agent, such as `$HOME/.agents/skills` for user-wide skills or `.agents/skills`, `.github/skills`, or `.claude/skills` for repository-scoped skills.
+It walks you through selecting which skills to install, whether to install them for the current project or globally, and which agent harnesses to set them up for.
 
-## Adding a Skill
-
-Create new skills directly in `skills/<skill-name>`.
-
-Minimum skill structure:
-
-```text
-skill-name/
-  SKILL.md
-```
-
-`SKILL.md` must start with YAML frontmatter:
-
-```md
----
-name: skill-name
-description: Describe exactly what the skill does and when an agent should use it.
----
-```
-
-Keep names lowercase with digits and hyphens only. Match the directory name exactly. Put trigger conditions in `description`, because agents use that field before loading the full skill body.
-
-## Validation
-
-Validate all skills:
+To browse or update later:
 
 ```bash
-scripts/validate-skills.py
+npx skills check     # see available updates
+npx skills update    # update installed skills
 ```
 
-Validate one skill directly with the reference validator:
+## Catalog
 
-```bash
-uvx --from skills-ref agentskills validate skills/SKILL_NAME
-```
+| Skill | What it does | When to use |
+| --- | --- | --- |
+| [`panel-review`](skills/panel-review) | Runs an independent, multi-agent expert panel that reviews a change across robustness, correctness, maintainability, complexity, tests, security, and more — then fixes accepted findings and re-reviews until clean. | You want a deep, merge-readiness review of a PR, branch, design, or substantial change — beyond a single-pass look. |
+| [`github-goal-delivery`](skills/github-goal-delivery) | Drives a long-horizon, multi-PR goal using GitHub issues as the durable tracker and pull requests as the reviewer interface: decompose into self-contained issues, ship sequential PRs, review independently, then review holistically. | You're handing an agent a big goal that spans many PRs and needs durable tracking and review. Requires GitHub issue and PR access. |
 
-## Publishing Checklist
+## Contributing & authoring
 
-- Keep repository-level docs in the repository root, not inside individual skill folders.
-- Keep each skill focused on one job.
-- Move large or variant-specific details from `SKILL.md` into `references/`.
-- Test scripts included in a skill before publishing.
-- Do not commit credentials, private URLs, proprietary source material, or machine-local paths.
-- Inspect third-party skills before installing them, especially skills that include scripts.
-- Use `gh skill publish --dry-run` before publishing through GitHub's skill flow.
-- Package skills as a Codex plugin later if you want an installable distribution unit that bundles multiple skills, apps, MCP settings, or presentation assets.
+Authoring conventions, layout rules, and validation steps live in [AGENTS.md](AGENTS.md) — read that before adding or editing a skill.
 
 ## License
 
-The repository is licensed under the Apache License, Version 2.0 by default. A skill can include its own `LICENSE.txt` if it needs different terms.
+Apache License 2.0. See [LICENSE](LICENSE). A skill may include its own `LICENSE.txt` if it needs different terms.

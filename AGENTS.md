@@ -25,4 +25,18 @@ Run validation before finishing skill changes:
 scripts/validate-skills.py
 ```
 
+Or validate one skill directly with the reference validator:
+
+```bash
+uvx --from skills-ref agentskills validate skills/SKILL_NAME
+```
+
 If a skill includes scripts, run a representative sample and report the command used.
+
+## Publishing checklist
+
+- Keep repository-level docs in the root (`README.md`, `AGENTS.md`), not inside individual skill folders.
+- Keep each skill focused on one job.
+- Move large or variant-specific details out of `SKILL.md` into `references/`.
+- Test any scripts a skill ships before publishing.
+- Do not commit credentials, private URLs, proprietary material, or machine-local paths.
