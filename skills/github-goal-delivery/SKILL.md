@@ -12,13 +12,13 @@ Use GitHub as the required durable coordination layer for a long-running goal. T
 
 ## Principles
 
-- The harness goal is the overall objective; GitHub is the durable state that survives handoffs.
+- The user's overall objective is the goal; GitHub is the durable state that survives handoffs.
 - One issue should be one independently implementable unit of work.
 - Issues are context delivery. A fresh agent should be able to implement an issue without hidden chat history; links supplement context but do not replace it.
 - PRs are the reviewer interface. An issue is not done until its PR has passed independent review and merged.
 - Keep PRs small enough to review deeply. Split or re-scope work that becomes diffuse. Before opening a PR, sanity-check size along two axes: volume, such as roughly 500+ changed lines a reviewer must reason about (count production code and tests; discount generated code, lockfiles, snapshots, golden files, and bulk fixtures), and spread, such as changes across many files or ownership boundaries. Either axis is a signal to reconsider splitting the issue. When a PR is unavoidably large or cross-cutting, say so explicitly in the reviewer notes and widen the review panel rather than letting a big diff get a thin review.
 - Keep the progress tracker issue authoritative: current plan, shared context, issue checklist, and final status.
-- Do not worry about backward compatibility unless explicitly told to. Do not add compatibility shims, preserve legacy behavior, or constrain the design for hypothetical old callers unless the user or tracker requires it. This applies to language in issues, PR descriptions, comments, and docs too; do not frame work as legacy support, shims, or migration compatibility unless required, and correct stray wording in place when it does not change behavior.
+- Do not add backward compatibility unless explicitly required by the user or tracker. Avoid shims, legacy framing, and constraints for hypothetical old integrations; correct stray wording when it does not change behavior.
 - Be willing to pursue a large goal when the plan is sound. Prefer the cohesive, modern solution over timid incremental patches; confidence must come from repo context, validation, and review.
 
 ## Templates
@@ -67,7 +67,7 @@ Work issues one at a time. Select the next unchecked issue whose dependencies ha
 3. Keep shared facts in the progress tracker when they affect later issues.
 4. Run the validation commands recorded at Start plus any issue-specific required validation, then note exact commands and results.
 5. Update the branch against the latest base, then open a PR linked to the issue using the PR template (`references/templates.md`): issue link, summary, validation, risks, and reviewer notes.
-6. Request comprehensive review from independent review agents that do not share this implementation's context. Use the review skill when available; otherwise spawn one or more fresh reviewer agents (see the parallel-reviewer pattern in the Concurrency Model). Do not self-approve.
+6. Request comprehensive review from independent review agents that do not share this implementation's context. Use `panel-review` when available; otherwise spawn one or more fresh reviewer agents (see the parallel-reviewer pattern in the Concurrency Model). Do not self-approve.
 7. Address every finding with commits. If rejecting a finding, explain why in the PR and ask the reviewer to confirm.
 8. Repeat review until there are no unresolved findings and required checks pass, then post the Review Record on the PR (`references/templates.md`).
 9. Confirm the PR carries a Review Record whose head SHA matches the current PR head and required checks are green, then merge according to repo policy, mark the implementation issue complete, and check it off in the progress tracker. Do not merge a PR that has no Review Record. After any post-review head change (review-fix commit, amend, rebase, force-push), the prior review and CI evidence is stale: rerun affected reviewers and validation on the new head, or record diff-equivalence, before merging.
@@ -79,7 +79,7 @@ If progress stalls mid-cycle, do not silently abandon the work:
 - **Validation keeps failing:** capture the exact failing command and output in the tracker, fix forward, and only escalate to the user if the failure indicates a flawed plan rather than a code bug.
 - **PR cannot merge** (conflicts, red required checks): rebase or resolve against the latest base; if checks are red for reasons outside the issue scope, record it and decide whether to fix here or file a separate issue.
 - **Issue turns out mis-scoped or too large:** stop, split it into smaller issues in the tracker, re-derive dependency order, and resume.
-- **Independent review cannot run** (no subagent permission in this session, review skill unavailable, no reviewer access): first distinguish policy or permission failures from operational resource failures. For resource, limit, or quota errors, close completed or stale reviewer agents and retry before escalating. If review still cannot run, do not merge the PR unreviewed and do not fall back to self-approval. Record the blocker in the tracker, leave the PR open, and ask the user to grant review/delegation access or decide how to proceed. An unreviewed merge is never the workaround.
+- **Independent review cannot run** (no subagent permission in this session, `panel-review` unavailable, no reviewer access): first distinguish policy or permission failures from operational resource failures. For resource, limit, or quota errors, close completed or stale reviewer agents and retry before escalating. If review still cannot run, do not merge the PR unreviewed and do not fall back to self-approval. Record the blocker in the tracker, leave the PR open, and ask the user to grant review/delegation access or decide how to proceed. An unreviewed merge is never the workaround.
 - **Missing access or an external decision is required:** first confirm the decision is actually required by the goal or tracker, not implied by examples, fixtures, samples, or legacy artifacts in the repo; illustrative data is not a constraint. If a safe, reversible default exists, take it, label it as an assumption in the tracker, and keep moving. Block on the user only when the decision is irreversible or cannot be defaulted safely. When you ask, make the question answerable in one message: define terms, give the concrete question, list options, and recommend a default. Do not park a draft PR on a self-imposed gate and call it progress.
 
 ## Final Pass
@@ -90,4 +90,4 @@ After all planned PRs have merged:
 2. Perform a deep holistic review against the Review Standard, plus integration cohesion, duplicated abstractions, documentation, comments, README updates, operational notes, and removal of any compatibility work added without an explicit requirement. Parallel reviewers focused on different concerns are encouraged here.
 3. Run broad validation using the recorded commands, plus any end-to-end checks appropriate to the repository.
 4. If gaps remain, triage by severity: blocker/high gaps gate completion, while related low/medium gaps should be bundled into as few follow-up PRs as possible or recorded as known follow-ups without blocking. Keep cohesive fixes together rather than splitting trivial PRs. If the final pass keeps generating new follow-ups across rounds, pause and confirm remaining scope with the user.
-5. When the solution is cohesive and validated, update the progress tracker with the final summary, validation evidence, and remaining known risks, then complete the harness goal.
+5. When the solution is cohesive and validated, update the progress tracker with the final summary, validation evidence, and remaining known risks, then report the goal complete.

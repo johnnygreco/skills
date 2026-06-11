@@ -109,7 +109,7 @@ Panel review can loop or creep. Do not iterate blindly:
 
 ## Final Report
 
-Report:
+Report a review result packet that can stand alone or be recorded by another workflow:
 
 - review target and base, as the frozen `base-ref base-sha..head-ref head-sha` plus the exact diff command, so a reader can reproduce exactly what was reviewed
 - reviewer panel design and why those lenses were chosen; always list applicable lenses that were skipped and the one-line reason for each
@@ -119,4 +119,10 @@ Report:
 - validation commands and results
 - clean review status or the exact unresolved blocker
 
-When this review backs a github-goal-delivery PR, post the result in the Review Record shape from that skill's `references/templates.md` so review evidence is consistent across PRs.
+## Recording Review Evidence
+
+When another workflow uses this review as a gate, return the same result packet. That workflow decides where the packet is stored and what completion gate it satisfies.
+
+Panel-review owns review quality: frozen target, reviewer selection, independent findings, fix verification, reruns, and final clean/blocker status.
+
+The coordinating workflow owns durable state and completion policy: where the packet is stored (PR, issue, task tracker, local ledger, or document), whether work may merge, close, publish, or be marked complete, and which template shape must be used.
