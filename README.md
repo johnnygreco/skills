@@ -27,6 +27,7 @@ npx skills update    # update installed skills
 | --- | --- | --- | --- |
 | [`panel-review`](skills/panel-review) | Runs specialist reviewers against a PR, branch, design, or substantial change, then fixes accepted findings and re-reviews until clean. | Before merging work where a single review pass is likely to miss something important. | [Example: GitHub goal delivery with panel review](docs/github-goal-delivery-with-panel-review.md) |
 | [`github-goal-delivery`](skills/github-goal-delivery) | Breaks a larger GitHub-backed goal into tracked issues and focused PRs, with review gates along the way and a final pass over the whole result. | For work large enough to need GitHub issues and PRs as durable state. Requires issue and PR access. | [Example: GitHub goal delivery with panel review](docs/github-goal-delivery-with-panel-review.md) |
+| [`kata-goal-delivery`](skills/kata-goal-delivery) | Breaks a larger Kata-backed goal into parent and child issues, with review records, close evidence, and a final pass over the whole result. | For work large enough to need Kata as the durable local issue ledger. Requires the `kata` CLI and a workspace-bound Kata project. | - |
 
 ## Contributing & authoring
 

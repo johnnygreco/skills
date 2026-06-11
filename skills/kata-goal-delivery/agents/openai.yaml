@@ -1,0 +1,4 @@
+interface:
+  display_name: "Kata Goal Delivery"
+  short_description: "Deliver long goals through Kata"
+  default_prompt: "Use $kata-goal-delivery to coordinate a long-running goal through Kata issues and local review."
