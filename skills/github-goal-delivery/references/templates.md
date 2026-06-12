@@ -112,7 +112,7 @@ Closes #<issue-number>
 
 ## Review Record
 
-Post this on the PR once review converges, before merge. It is the durable proof that review happened and lets a later reader reproduce exactly what was reviewed. Use this single shape whether the review came from the panel-review skill or from fresh reviewer agents.
+Post this on the PR once review converges, before merge. It is the durable proof that review happened and lets a later reader reproduce exactly what was reviewed. Use this single shape whether the review came from the `panel-review` skill or from fresh reviewer agents.
 
 ```markdown
 ## Review Record
@@ -123,7 +123,7 @@ Diff command: `<exact command that reproduces the reviewed diff>`
 Panel:
 - <reviewer name>: <lenses> -> clean | findings
 - <reviewer name>: <lenses> -> clean | findings
-Skipped Review-Standard lenses: <lens — one-line reason each, or "none">
+Skipped Review-Standard lenses: <lens - one-line reason each, or "none">
 
 Accepted findings fixed:
 - <finding -> fix>
