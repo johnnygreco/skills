@@ -1,0 +1,4 @@
+interface:
+  display_name: "Repo Spring Cleaning"
+  short_description: "Repository spring cleaning"
+  default_prompt: "Use $repo-spring-cleaning to run a deep repository spring cleaning pass with validation and independent review when available."
