@@ -1,4 +1,0 @@
-interface:
-  display_name: "Codebase Health Check"
-  short_description: "Periodic codebase health checks"
-  default_prompt: "Use $codebase-health-check to run a deep repository health check and spring cleaning pass with validation and independent review when available."

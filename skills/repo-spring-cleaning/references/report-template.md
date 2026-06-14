@@ -1,4 +1,4 @@
-# Health Check Report Template
+# Spring Cleaning Report Template
 
 Use this shape for a final response, tracker update, or PR description. Keep it
 concise and evidence-backed.

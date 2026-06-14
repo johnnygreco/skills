@@ -1,17 +1,18 @@
 ---
-name: codebase-health-check
+name: repo-spring-cleaning
 description: >-
-  Use when the user asks for a periodic repository health check, spring cleaning,
-  deep repo audit, comprehensive cleanup, documentation streamlining,
-  dependency/tooling hygiene, agent-instruction or agent-skill audit, or
-  release-readiness cleanup across a codebase. Guides evidence-based inventory,
-  scoped cleanup and refactoring, validation, independent review, and
-  repeatable health reporting for any language or repository.
+  Use when the user asks for repository spring cleaning, periodic codebase
+  maintenance, deep repo audit with cleanup, comprehensive cleanup,
+  documentation streamlining, dependency/tooling hygiene, agent-instruction or
+  agent-skill audit, or release-readiness cleanup across a codebase. Guides
+  evidence-based inventory, behavior-preserving cleanup and refactoring,
+  validation, independent review, and repeatable maintenance reporting for any
+  language or repository.
 metadata:
-  short-description: Periodic codebase health checks
+  short-description: Repository spring cleaning
 ---
 
-# Codebase Health Check
+# Repo Spring Cleaning
 
 Run an evidence-based maintenance pass that leaves the repository cleaner,
 better documented, and easier to keep healthy. Prefer small, defensible fixes
@@ -46,7 +47,7 @@ over speculative rewrites.
 
 ## Workflow
 
-1. **Scope the check.** Restate the health-check goal, explicit release or
+1. **Scope the check.** Restate the spring-cleaning goal, explicit release or
    publishing requirements, non-goals, and risk tolerance. Ask only for missing
    decisions that cannot be safely inferred.
 2. **Build a baseline.** Inspect repository instructions, README, contribution
@@ -76,7 +77,7 @@ over speculative rewrites.
    the fix changes the reviewed surface. Do not substitute a single self-review
    for unavailable independent review.
 8. **Report.** Use [report-template.md](references/report-template.md) for the
-   final health-check summary or tracker/PR update.
+   final maintenance summary or tracker/PR update.
 
 ## Agent Skills And Instructions
 
