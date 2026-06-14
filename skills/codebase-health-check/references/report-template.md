@@ -13,26 +13,31 @@ concise and evidence-backed.
 ## Baseline
 
 - Languages and frameworks:
+- Language/toolchain details:
 - Canonical validation commands:
 - CI/release surfaces:
 - Docs and agent surfaces reviewed:
+- Inventory evidence or commands reviewed:
 - Skipped lenses and reasons:
 
 ## Changes Made
 
+- Changed files and rationale:
 - Code:
 - Tests:
 - Documentation:
 - Tooling/config:
 - Agent instructions or skills:
 - Dependencies:
+- Removals or dependency changes with evidence:
 
 ## Validation
 
 - Command:
-  Result:
+  Result or summarized output:
 - Command:
-  Result:
+  Result or summarized output:
+- Representative script samples:
 
 ## Review
 

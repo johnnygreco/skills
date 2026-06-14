@@ -26,7 +26,11 @@ over speculative rewrites.
   ownership boundaries.
 - Use high-confidence cleanup by default: stale docs, broken commands, dead
   references, invalid config, duplicated instructions, obvious code smells, and
-  missing validation around changed behavior.
+  missing validation around touched behavior.
+- Preserve product and runtime behavior by default. Limit code edits to
+  behavior-preserving refactors and hygiene fixes; record suspected behavior
+  bugs or semantic changes as findings or follow-ups unless the user explicitly
+  authorizes fixing them.
 - Do not remove code, docs, dependencies, or skills merely because they look
   unused. Find evidence first, then record the rationale.
 - If the work is broad enough to need durable coordination, use an available
@@ -48,6 +52,10 @@ over speculative rewrites.
 2. **Build a baseline.** Inspect repository instructions, README, contribution
    docs, CI, package manifests, lockfiles, test config, release metadata, and
    git status. Identify generated or vendored files to avoid editing by hand.
+   For repositories with code, record each detected language/framework,
+   package manager or toolchain, formatter, linter, type checker, test/build
+   command, key config file, and local idiom or contract inspected. Skip this
+   only with an explicit no-code/runtime-surface rationale.
 3. **Select audit lenses.** Read [audit-lenses.md](references/audit-lenses.md)
    and choose only the lenses relevant to this repository. Note skipped lenses
    when they would otherwise be expected.
@@ -55,11 +63,13 @@ over speculative rewrites.
    that need review, and follow-ups. Keep each implementation slice cohesive;
    split work that crosses many ownership boundaries.
 5. **Clean deliberately.** Update docs and agent instructions to match reality,
-   remove stale material with evidence, simplify overcomplicated code, align
-   tooling with language norms, and add or repair tests where behavior changes.
+   remove stale material with evidence, simplify overcomplicated code without
+   changing behavior, align tooling with language norms, and add or repair
+   tests that prove touched areas still behave as expected.
 6. **Validate.** Run the repository's documented validation commands plus any
-   targeted checks for touched areas. If a skill or script is changed, run its
-   validator or a representative sample.
+   targeted checks for touched areas. If a skill is changed, run its validator.
+   If a script is changed or added, also run a representative sample and report
+   the command used.
 7. **Review and iterate.** Freeze the diff, run `panel-review` or another
    available independent review workflow, verify every reviewer finding against
    the codebase, fix accepted issues, rerun validation, and repeat review where
