@@ -34,8 +34,8 @@ over speculative rewrites.
   authorizes fixing them.
 - Do not remove code, docs, dependencies, or skills merely because they look
   unused. Find evidence first, then record the rationale.
-- If the work is broad enough to need durable coordination, use an available
-  goal-delivery skill or project tracker before making sweeping changes.
+- If the work is broad enough to need durable coordination, use the project's
+  tracker before making sweeping changes.
 - Use `panel-review` for substantive cleanup, refactoring, documentation
   rewrites, agent-skill pruning, or release preparation when it is available.
   If it is not available, use another independent reviewer or subagent workflow
