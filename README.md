@@ -23,12 +23,11 @@ npx skills update    # update installed skills
 
 ## Catalog
 
-| Skill | What it does | When to use | Docs |
-| --- | --- | --- | --- |
-| [`repo-spring-cleaning`](skills/repo-spring-cleaning) | Runs an evidence-based repository spring cleaning pass, including docs, tooling, agent assets, validation, and independent review when available. | For periodic maintenance or broad cleanup work that should improve maintainability without changing behavior. | - |
-| [`panel-review`](skills/panel-review) | Runs specialist reviewers against a PR, branch, design, or substantial change, then fixes accepted findings and re-reviews until clean. | Before merging work where a single review pass is likely to miss something important. | [Example: GitHub goal delivery with panel review](docs/github-goal-delivery-with-panel-review.md) |
-| [`github-goal-delivery`](skills/github-goal-delivery) | Breaks a larger GitHub-backed goal into tracked issues and focused PRs, with review gates along the way and a final pass over the whole result. | For work large enough to need GitHub issues and PRs as durable state. Requires issue and PR access. | [Example: GitHub goal delivery with panel review](docs/github-goal-delivery-with-panel-review.md) |
-| [`kata-goal-delivery`](skills/kata-goal-delivery) | Breaks a larger Kata-backed goal into parent and child issues, with review records, close evidence, and a final pass over the whole result. | For work large enough to need Kata as the durable local issue ledger. Requires the `kata` CLI and a workspace-bound Kata project. | - |
+| Skill | What it does | When to use |
+| --- | --- | --- |
+| [`repo-spring-cleaning`](skills/repo-spring-cleaning) | Runs an evidence-based repository spring cleaning pass, including docs, tooling, agent assets, validation, and independent review when available. | For periodic maintenance or broad cleanup work that should improve maintainability without changing behavior. |
+| [`panel-review`](skills/panel-review) | Spawns independent review agents with tailored lenses and produces a verified report. Fixes and repeats review until clean only when explicitly requested. | For deep review of a PR, branch, design, or substantial change. |
+| [`blast-radius`](skills/blast-radius) | Traces downstream effects and verifies critical assumptions, returning an impact report. | For investigating what a change could break, on its own or within a panel review. |
 
 ## Contributing & authoring
 

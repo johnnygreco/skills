@@ -1,128 +1,144 @@
 ---
 name: panel-review
-description: >-
-  Run a deep, multi-agent expert panel review of a PR, branch, design, or substantial change. Use when the user asks for panel review, deep review, multi-agent review, specialist reviewers, merge-readiness review, review until clean, or independent checks across robustness, correctness, maintainability, complexity, tests, security, user or agent experience, documentation, and integration risks.
+description: Panel review, deep review, or review until clean.
 metadata:
-  short-description: Expert-panel deep review
+  short-description: Independent expert-panel review
 ---
 
 # Panel Review
 
-Run an independent, specialist review panel for substantive review work. The lead agent designs the reviewer mix for the target, then owns the outcome: verify every finding against the real code, fix accepted issues, rerun validation, and repeat review until no accepted findings remain.
+Design a panel around the target's actual risks, spawn independent review agents,
+monitor and steer their work, and verify their findings before reporting them.
 
-## Contract
+## Choose the Mode
 
-- Use subagents. If no subagent tool is available, say that panel-review requires subagents and do not replace it with a single self-review.
-- Tailor the panel to the change. Do not mechanically spawn a fixed set of reviewers when fewer, broader, narrower, or different specialists would review the target better.
-- Keep reviewer agents independent. Start them with fresh context where possible; do not include implementation chat history, your private conclusions, or expected findings.
-- Run the panel concurrently. Spawn reviewers in parallel and blind to each other, then aggregate once they all return.
-- Close out reviewer subagents when done. If your harness uses persistent or pool-limited subagents, release each reviewer once you have captured its result, and close superseded reviewers from a prior round before spawning the next. If a spawn fails because the subagent limit is reached, close completed or stale reviewers and retry once before treating it as blocked.
-- Review a frozen target per round. Pin the change to a stable reference and give every reviewer in that round the same diff; after fixes, create a new frozen target for the next round.
-- Reviewer output is advisory. Verify findings by reading the actual code path, adjacent files, project standards, and external docs when relevant.
-- Prefer actionable findings over nits. Reject speculative risks, taste-only feedback, broad rewrites, and edge cases that do not matter for the target.
-- Guard strictly against over-engineering. Treat needless abstraction, cleverness, generic machinery, duplicated concepts, or extra moving parts as review-worthy only when they materially hurt the code's future maintainability.
-- Fix accepted findings at the right ownership boundary. When one finding reveals a repeated bug class, inspect sibling instances in the target scope.
-- Rerun the relevant reviewers after review-triggered code changes. Continue until all accepted findings are fixed or consciously rejected and the final pass reports no accepted findings.
-- Do not push only to run this skill. Push or update a PR only when the user asked for that.
+Produce a report in the conversation by default. Review does not authorize edits
+to the reviewed artifacts, commits, pushes, or posting to a PR or tracker.
 
-## Target Setup
+Only when the user explicitly asks to "iterate until clean," "fix and re-review,"
+or an equivalent repeated cycle, read [iterate-until-clean.md](references/iterate-until-clean.md)
+and follow that workflow. Do not load it for ordinary review. A one-off request to
+fix findings authorizes those fixes, not an automatic repeated cycle.
 
-You know git; choose the commands yourself. This section defines *what* the reviewers need, not the exact plumbing to produce it.
+## Establish the Target
 
-1. Identify the review target.
-   - Use any base ref, commit, tag, or PR the user names.
-   - Otherwise, if an open PR exists, use its base ref; failing that, use the repository's default remote branch.
-   - If the working tree has uncommitted changes, decide explicitly whether they belong to the target. If they do, include them — do not let a commit-only diff silently drop them.
-2. Freeze the target for this review round before spawning reviewers. Use a stable head SHA plus an explicit patch/ref for any included uncommitted work, or make an explicit local commit/stash decision when that is appropriate for the repo. Record the exact command or commands that reproduce the diff. After fixes, create a fresh frozen target for the next round.
-3. Assemble a target packet every reviewer receives:
-   - the change itself: branch, working-tree status, base/merge-base/head, commit list, changed files, diff stat, and the exact diff command to run
-   - project context that should shape review: AGENTS.md, CONTRIBUTING, README, relevant docs, ADRs, specs, the issue/PR/spec description, CI config, and package/test manifests
-   - validation already run, and the commands to run after fixes
-   - the accepted scope, known non-goals, and the **ambition ceiling**: what "done" means for this target and the severity bar to apply. State it explicitly (e.g. "this is personal-production scope; do not propose enterprise/multi-tenant/maximalist hardening unless the diff creates a concrete blocker"). When the ceiling is unstated, reviewers default to maximalist hardening and escalate scope, which wastes a whole round.
+1. Honor the user's target and comparison point. For a Git change without an
+   explicit base, infer it from the PR or default branch and state the assumption.
+   Verify refs resolve and check for an empty diff before dispatching; do not
+   substitute another target. For a document, design, or other artifact, establish
+   whether to assess the whole artifact or a change from a prior version.
+2. Freeze the reviewed version. Record base, merge-base, head, and diff commands
+   for Git changes; otherwise use versioned copies or content hashes. Explicitly
+   include or exclude staged, unstaged, and untracked work; preserve included patches and
+   new files. Give all reviewers the same snapshot and matching surrounding files.
+   Use temporary copies as needed without committing, stashing, or discarding user
+   work. Refresh affected reviews if the target changes.
+3. Gather the user's requirements, relevant spec or issue, repository instructions,
+   standards, ADRs, and validation commands. State missing context without
+   inventing requirements; ask only when it prevents a useful review.
+4. Share a target packet: snapshot and diff access, changed files, relevant context
+   paths or contents, checks already run, scope, non-goals, and severity bar.
+   Include the intended users, scale, and known constraints. Unknown conditions
+   are uncertainties to investigate or disclose, not invented requirements.
 
-## Review Panel
+## Choose Lenses and Spawn Reviewers
 
-Load `references/review-lenses.md` before spawning reviewers.
+Read the [lens index](references/review-lenses.md) and only the selected lens
+files. Identify the target's material risks and give each an owner. Lenses focus
+attention; they do not prohibit noticing problems across boundaries. Combine,
+specialize, or invent lenses to fit the target. Give a custom lens a clear question,
+scope, and evidence standard. Use a Generalist for broad coverage when useful,
+and allow intentional overlap for consequential risks. Record material gaps.
 
-First design the panel:
+Apply repository standards across the selected lenses and keep documented-rule
+violations distinguishable from gaps in the requested behavior. Cover meaningful
+risks with the smallest useful panel. One independent Generalist may cover a
+narrow target; several focused reviewers may suit substantial or varied risks.
+Size by complexity, uncertainty, and consequence, not line or module count alone.
 
-1. Inspect the target packet and changed files.
-2. Identify the risk surfaces: behavior, robustness, maintainability, complexity, tests, security, user experience, agent experience, documentation, APIs, data, operations, performance, or other domain concerns.
-3. Choose the smallest set of independent reviewers that covers the meaningful risks. Combine lenses for small diffs; split lenses when a risk is deep enough to deserve focused attention.
-4. Explicitly skip inapplicable lenses instead of spawning low-value reviewers. For example, documentation may be skipped when no user-visible behavior, API, workflow, or operational contract changed. Record which applicable lenses you skipped and why — an unexplained gap in coverage is itself a review weakness.
-5. Avoid redundant reviewer stacking. Three near-identical reviewers all on the data contract while correctness, tests, and security go unreviewed is wasted coverage. If you do put more than one reviewer on the same lens — useful for a deep, high-risk surface — give each a distinct subscope or state why the redundancy is intentional, and still cover the other applicable lenses.
+Spawn **independent review agents** through an available agent execution
+mechanism, concurrently where practical. Do not silently substitute the lead's
+own review for an available, permitted independent review. If independent
+execution is unavailable, fails, or conflicts with the user's constraints, perform
+the useful review that remains and disclose the cause and loss of independence.
 
-A multi-reviewer panel is the default. A single general reviewer is acceptable at the lead agent's discretion, but only for simple, narrow changes that one reviewer can fully digest and give meaningful feedback on across the applicable lenses. The larger or riskier the diff, the more the panel must split across lenses; never reduce a large, architectural, or security-sensitive change to a single reviewer.
+Read the [reviewer brief](references/reviewer-brief.md) when preparing assignments.
+Give each reviewer the target packet, relevant rules and lens questions, scope,
+and expected response. Inline short instructions or provide specific accessible
+references; do not make reviewers reload the lead's workflow or every lens. Use
+fresh context where supported, omitting implementation chat history, suspected
+findings, and other reviewers' conclusions. Reviewers inspect without editing.
 
-Typical panels are three to six reviewers, but the correct number depends on the diff. Examples:
+## Monitor and Steer the Panel
 
-- Small internal refactor: correctness/robustness, maintainability/complexity, tests.
-- Auth or permissions change: security/privacy, correctness/robustness, tests/integration.
-- Frontend workflow change: user experience/accessibility, correctness, maintainability/tests, docs if user-facing behavior changed.
-- Agent-tooling change: agent experience, correctness/robustness, maintainability/complexity, tests/docs.
+The lead owns reviewer progress through synthesis. Set effort expectations that
+fit the target and any runtime limits, leaving time to verify and report. Use the
+environment's completion notifications, waits, or bounded status checks; avoid
+busy polling and unattended background work. Meanwhile, inspect the target for
+later verification. Intervene when progress, scope, or evidence warrants it:
 
-Each reviewer prompt must include:
+- Redirect scope creep and over-engineering early. Ask which supported user or
+  caller can encounter the problem, whether an existing constraint prevents it, and
+  what requirement or concrete maintenance cost justifies the proposed change.
+  Seek the simplest adequate remedy.
+- Supply missing context or narrow a stalled investigation. Stop redundant work
+  while preserving meaningful coverage. Follow downstream evidence as needed
+  without expanding the authorized repair scope. Route material cross-lens
+  discoveries to an owner. For a long-running check, ask what it has established,
+  what uncertainty remains, and whether continuing could change the report.
+- Preserve independent initial judgments. For subsequent verification, share the
+  disputed evidence when useful without directing a verdict. Do not suppress a
+  substantiated issue to obtain a clean result.
 
-- the target packet
-- relevant context file paths
-- the selected lenses and any relevant guidance from `references/review-lenses.md`
-- the reviewer's scope, exclusions, severity bar, and the target's ambition ceiling
-- instructions to inspect code and run read-only commands as needed
-- instructions not to edit files
-- the required output format from `references/review-lenses.md`
+Account for every assigned review before the final report. Check that each result
+names the assigned snapshot and reports evidence and methods for any claimed
+validation. Send stale, mismatched, or unsupported results back for correction;
+replace the reviewer when useful, or record incomplete coverage. If a reviewer
+cannot finish within the available constraints, collect partial findings and
+report the gap. Stop owned checks and release workers as needed before finishing.
 
-## Aggregation
+## Verify and Synthesize
 
-1. Wait for all reviewers. Treat each reviewer return as one incremental result, not panel completion — a non-timeout wait can mean a single reviewer finished. Do not aggregate, declare clean, or decide to merge until every expected reviewer has completed, timed out, or been deliberately superseded.
-2. Deduplicate findings by root cause, not by file.
-3. Verify each finding locally. Accept it only when it is concrete, actionable, and supported by the code or project requirements.
-4. Classify each finding as:
-   - `accepted`: fix now
-   - `rejected`: explain why it is intentional, speculative, out of scope, or not a real risk
-   - `follow-up`: real but outside the requested review scope
-5. Fix accepted findings, then run focused validation and any broad validation required by the repository.
+- Verify findings against the actual path, adjacent code, and requirements.
+  Reviewer agreement and a passing test suite do not establish correctness.
+- For a consequential claim, identify the assumption it depends on and seek
+  evidence proportionate to the risk. Separate source inspection, execution-path
+  reasoning, and observed test or reproduction results; label unverified claims.
+- Deduplicate by root cause while retaining lens labels and evidence. Resolve
+  disagreements from source material rather than votes.
+- Classify findings as **accepted** (substantiated and in scope), **rejected**
+  (unsupported, unreachable, intentional, or taste-only), or **follow-up** (real
+  but outside scope or pre-existing). A finding outside one reviewer's assignment
+  can still be in the panel's scope. Include material, relevant follow-ups that
+  respect the user's reporting scope; do not turn review into an unrelated audit.
+  Acceptance includes a finding in the report; it does not authorize edits.
+- Keep defects and documented-rule violations distinct from design judgments.
+  Assess design proportionality when structure or maintenance is a relevant risk,
+  using concrete costs and project constraints. Assess a suggested remedy's
+  complexity as well as its benefit; a valid finding may have an overbuilt proposed
+  fix. Exclude taste-only nits, speculative rewrites, and issues below the agreed
+  reporting bar. Record consequential unresolved questions as limitations.
 
-## Iteration
+## Report
 
-After any fix caused by the review, batch accepted findings for the target into one fix pass before re-review; do not fix one finding and rerun one reviewer at a time. Finish one target's review loop before starting another's, rather than interleaving reruns across multiple PRs.
+Lead with verified findings ordered by impact: location, trigger, evidence,
+consequence, and a focused recommendation. Retain lens labels and requirement or
+standards citations. If none survive verification, say no actionable findings
+were found within the reviewed scope.
 
-1. Create a fresh frozen target packet so reviewers see the updated diff.
-2. Rerun every reviewer whose finding led to a fix.
-3. Also rerun any lens whose risk surface changed because of the fix.
-4. Redesign and rerun the panel when the fix is broad, architectural, security-sensitive, or changes public behavior.
+Include a compact review record:
 
-Stop only when:
+- Target version, comparison point, reproducible commands or snapshot, and included
+  uncommitted work.
+- Reviewers and lenses, material skipped or incomplete coverage, and any fallback
+  with its actual cause.
+- Accepted findings, reasons for consequential rejections, and relevant follow-ups
+  with their location and trigger.
+- Validation commands and observed results, with checks not run clearly identified.
+- Review status: **findings**, **clean within reviewed scope**, or **incomplete**.
+  Missing material coverage or evidence prevents a clean verdict. Report validation
+  status separately; review alone does not certify merge readiness.
 
-- no accepted findings remain,
-- validation has passed or an external failure is clearly documented,
-- rejected findings have concise reasons,
-- follow-ups are explicitly out of scope and recorded.
-
-## When Review Does Not Converge
-
-Panel review can loop or creep. Do not iterate blindly:
-
-- If a fix would exceed this target's scope or change architecture, public behavior, or security posture, stop and surface it to the user rather than growing the diff inside the review.
-- If new accepted findings keep appearing across rounds with no sign of settling, pause, summarize what is and is not resolved, and ask the user how to proceed.
-- If two reviewers give conflicting guidance, the lead decides, records the rationale, and does not relitigate it in later rounds.
-- Do not run an extra round just to produce a cleaner report. Once a pass returns no accepted findings, that pass is the result.
-
-## Final Report
-
-Report a review result packet that can stand alone or be recorded by another workflow:
-
-- review target and base, as the frozen `base-ref base-sha..head-ref head-sha` plus the exact diff command, so a reader can reproduce exactly what was reviewed
-- reviewer panel design and why those lenses were chosen; always list applicable lenses that were skipped and the one-line reason for each
-- reviewers run, including reruns
-- accepted findings fixed
-- rejected findings with short rationale
-- validation commands and results
-- clean review status or the exact unresolved blocker
-
-## Recording Review Evidence
-
-When another workflow uses this review as a gate, return the same result packet. That workflow decides where the packet is stored and what completion gate it satisfies.
-
-Panel-review owns review quality: frozen target, reviewer selection, independent findings, fix verification, reruns, and final clean/blocker status.
-
-The coordinating workflow owns durable state and completion policy: where the packet is stored (PR, issue, task tracker, local ledger, or document), whether work may merge, close, publish, or be marked complete, and which template shape must be used.
+Return the report to any coordinating workflow, which owns storage, publishing,
+and completion decisions. Finish after accounting for the panel and delivering
+the report; do not keep waiting for already-completed work.
