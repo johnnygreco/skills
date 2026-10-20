@@ -28,6 +28,7 @@ npx skills update    # update installed skills
 | [`repo-spring-cleaning`](skills/repo-spring-cleaning) | Runs an evidence-based repository spring cleaning pass, including docs, tooling, agent assets, validation, and independent review when available. | For periodic maintenance or broad cleanup work that should improve maintainability without changing behavior. |
 | [`panel-review`](skills/panel-review) | Spawns independent review agents with tailored lenses and produces a verified report. Fixes and repeats review until clean only when explicitly requested. | For deep review of a PR, branch, design, or substantial change. |
 | [`blast-radius`](skills/blast-radius) | Traces downstream effects and verifies critical assumptions, returning an impact report. | For investigating what a change could break, on its own or within a panel review. |
+| [`show-me-your-work`](skills/show-me-your-work) | Maintains an append-only decision log with evidence, verification outcomes, and a handoff audit. | For long-running or unattended work that needs a reviewable trail, or auditing an existing trail. |
 
 ## Contributing & authoring
 

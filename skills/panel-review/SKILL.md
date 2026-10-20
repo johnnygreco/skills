@@ -1,8 +1,6 @@
 ---
 name: panel-review
 description: Panel review, deep review, or review until clean.
-metadata:
-  short-description: Independent expert-panel review
 ---
 
 # Panel Review

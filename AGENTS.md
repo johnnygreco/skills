@@ -5,6 +5,7 @@ This repository publishes reusable Agent Skills.
 ## Layout
 
 - Put each skill directly in `skills/<skill-name>`.
+- Keep temporary reports, QA evidence, and other task artifacts in `agent-context/working/` (gitignored).
 - Do not create auxiliary docs inside individual skill folders. A skill folder should contain only `SKILL.md` and resources the agent may use: `agents/`, `scripts/`, `references/`, and `assets/`.
 
 ## Creating Or Editing Skills
@@ -25,7 +26,10 @@ Run validation before finishing skill changes:
 scripts/validate-skills.py
 ```
 
-Or validate one skill directly with the reference validator:
+The repository validator accepts the boolean `disable-model-invocation` extension
+and checks that invocation policy agrees with `agents/openai.yaml` for Codex.
+
+For skills without extensions, validate one skill directly with the reference validator:
 
 ```bash
 uvx --from skills-ref agentskills validate skills/SKILL_NAME

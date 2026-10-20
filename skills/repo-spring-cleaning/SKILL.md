@@ -1,15 +1,6 @@
 ---
 name: repo-spring-cleaning
-description: >-
-  Use when the user asks for repository spring cleaning, periodic codebase
-  maintenance, deep repo audit with cleanup, comprehensive cleanup,
-  documentation streamlining, dependency/tooling hygiene, agent-instruction or
-  agent-skill audit, or release-readiness cleanup across a codebase. Guides
-  evidence-based inventory, behavior-preserving cleanup and refactoring,
-  validation, independent review, and repeatable maintenance reporting for any
-  language or repository.
-metadata:
-  short-description: Repository spring cleaning
+description: Repository spring cleaning, codebase maintenance, or a repo audit with cleanup.
 ---
 
 # Repo Spring Cleaning
