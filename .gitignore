@@ -9,3 +9,4 @@ __pycache__/
 *.tmp
 dist/
 build/
+/agent-context/working/

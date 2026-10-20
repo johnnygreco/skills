@@ -1,8 +1,6 @@
 ---
 name: blast-radius
 description: Blast radius, downstream impact, or what could this break.
-metadata:
-  short-description: Trace downstream change impacts
 ---
 
 # Blast Radius
