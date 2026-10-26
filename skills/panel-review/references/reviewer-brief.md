@@ -52,18 +52,6 @@ especially if the lead is itself delegated work. If results cannot be collected,
 change the execution method or report incomplete coverage; dispatch is not
 completion. Ensure reviewers know how to return partial results or blockers.
 
-## Re-review Assignments
-
-For a round after a fix pass, give the reviewer the prior accepted findings as
-they were raised, the fix delta and the cumulative diff, the validation results,
-and the bar the loop converges to. Ask three questions: is each prior finding
-resolved, did the delta introduce a regression, and does the delta contain a
-defect at the bar. Say that items below the bar belong under Follow-ups and will
-be recorded rather than fixed, so the reviewer calibrates instead of filling a
-list. Do not ask for residual threats, further hardening, or whatever else the
-reviewer can think of, and do not say the lead believes the fixes are correct.
-Add the `Prior findings` line from the Response Format.
-
 ## Review Rules
 
 - Inspect the target and directly related code or artifacts before drawing
@@ -126,7 +114,6 @@ Reviewer: <name>
 Lenses: <selected or custom lenses>
 Target: <snapshot/version reviewed>
 Coverage: <areas examined; material gaps>
-Prior findings: <re-review rounds only: each prior finding resolved | partial | not, with evidence>
 Verdict: clean | findings | incomplete
 
 Findings:
@@ -144,9 +131,8 @@ Validation: <method, commands, tested version, and results, or not run>
 Limitations: <uncertainties or missing context>
 ```
 
-Omit the findings list when empty and the `Prior findings` line outside a
-re-review round. Use `incomplete` when material coverage is missing, even if no
-defect was found. Calibrate severity to the impact: blocker
+Omit the findings list when empty. Use `incomplete` when material coverage is
+missing, even if no defect was found. Calibrate severity to the impact: blocker
 prevents the target's core use or safe delivery; high materially breaks an
 important supported case; medium is a bounded actionable problem; low is a minor
 but concrete cost. Use the project's severity convention when provided and

@@ -1,6 +1,6 @@
 ---
 name: panel-review
-description: Panel review, deep review, or review until clean.
+description: Panel review or deep review.
 ---
 
 # Panel Review
@@ -13,12 +13,10 @@ monitor and steer their work, and verify their findings before reporting them.
 Produce a report in the conversation by default. Review does not authorize edits
 to the reviewed artifacts, commits, pushes, or posting to a PR or tracker.
 
-Only when the user explicitly asks to "iterate until clean," "fix and re-review,"
-or an equivalent repeated cycle, read [iterate-until-clean.md](references/iterate-until-clean.md)
-and follow that workflow. Do not load it for ordinary review. A one-off request to
-fix findings authorizes those fixes, not an automatic repeated cycle: fix the
-accepted findings, validate, and verify the delta in proportion to its size, with
-your own check for a small delta or one independent reviewer for a substantial one.
+A request to fix findings authorizes those fixes, not a repeated review cycle:
+fix the accepted findings, validate, and verify the delta in proportion to its
+size, with your own check for a small delta or one independent reviewer for a
+substantial one.
 
 ## Establish the Target
 
