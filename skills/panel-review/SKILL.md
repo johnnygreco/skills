@@ -1,6 +1,6 @@
 ---
 name: panel-review
-description: Panel review, deep review, or review until clean.
+description: Panel review or deep review.
 ---
 
 # Panel Review
@@ -13,12 +13,10 @@ monitor and steer their work, and verify their findings before reporting them.
 Produce a report in the conversation by default. Review does not authorize edits
 to the reviewed artifacts, commits, pushes, or posting to a PR or tracker.
 
-Only when the user explicitly asks to "iterate until clean," "fix and re-review,"
-or an equivalent repeated cycle, read [iterate-until-clean.md](references/iterate-until-clean.md)
-and follow that workflow. Do not load it for ordinary review. A one-off request to
-fix findings authorizes those fixes, not an automatic repeated cycle: fix the
-accepted findings, validate, and verify the delta in proportion to its size, with
-your own check for a small delta or one independent reviewer for a substantial one.
+A request to fix findings authorizes those fixes, not a repeated review cycle:
+fix the accepted findings, validate, and verify the delta in proportion to its
+size, with your own check for a small delta or one independent reviewer for a
+substantial one.
 
 ## Establish the Target
 
@@ -56,11 +54,23 @@ risks with the smallest useful panel. One independent Generalist may cover a
 narrow target; several focused reviewers may suit substantial or varied risks.
 Size by complexity, uncertainty, and consequence, not line or module count alone.
 
-Spawn **independent review agents** through an available agent execution
-mechanism, concurrently where practical. Do not silently substitute the lead's
-own review for an available, permitted independent review. If independent
-execution is unavailable, fails, or conflicts with the user's constraints, perform
-the useful review that remains and disclose the cause and loss of independence.
+Choose each reviewer's model and reasoning effort as deliberately as its lens,
+from the latest version of each family at medium to xhigh effort:
+
+- **Opus:** a strong, creative coder.
+- **GPT Sol:** a strong coder, analytical and thorough.
+- **Fable:** a deep, creative thinker.
+
+Match these strengths to the risks you assigned, and spend more effort where a
+risk is subtle or consequential. Different models bring different perspectives,
+which is most valuable where reviewers overlap on a consequential risk. If a
+family is unavailable, use the others and record the gap.
+
+Spawn **independent review agents** with T3 Code's `delegate_task`,
+concurrently where practical. Do not silently substitute the lead's own review
+for an available, permitted independent review. If independent execution is
+unavailable, fails, or conflicts with the user's constraints, perform the useful
+review that remains and disclose the cause and loss of independence.
 
 Read the [reviewer brief](references/reviewer-brief.md) when preparing assignments.
 Give each reviewer the target packet, relevant rules and lens questions, scope,
@@ -130,8 +140,8 @@ Include a compact review record:
 
 - Target version, comparison point, reproducible commands or snapshot, and included
   uncommitted work.
-- Reviewers and lenses, material skipped or incomplete coverage, and any fallback
-  with its actual cause.
+- Reviewers with their lenses, models, and reasoning effort; material skipped or
+  incomplete coverage; and any fallback with its actual cause.
 - Accepted findings, reasons for consequential rejections, and relevant follow-ups
   with their location and trigger.
 - Validation commands and observed results, with checks not run clearly identified.

@@ -1,0 +1,149 @@
+---
+name: full-send
+description: Trigger this if the user says 'full send'.
+---
+
+# Full Send
+
+If the user triggered this, it's because they are not watching this thread, and
+they want you to complete the work end-to-end autonomously. Your updates and
+your final message go unread until long after you stop. You own the work from
+its current state to a merged PR.
+
+If the user did not explicitly request "full send" in some clear way, do not
+assume full autonomy. If they did, everything below applies.
+
+The user grants you permission to:
+
+- Merge the PR once the merge gate passes.
+- Force-push the PR's own branch with `--force-with-lease` after a rebase.
+- Use the test methods that Proof needs, without asking first.
+
+## Testing permission
+
+A "full send" request is the permission. If a project file or other
+instruction says to ask before a test method, or to leave testing to the
+user, this request replaces that rule for this task.
+
+That includes ask-first rules for computer use, browser automation,
+simulators and devices, running the app or a dev server, screenshots, and
+visual checks. Use the method that gives direct proof. List it in the
+report.
+
+Rules about how to test still apply. Follow rules that name the correct
+command, fixture, or check. This permission only removes the ask-first or
+leave-it-to-the-user step. If a preferred method cannot prove the change,
+use a gated method under this permission.
+
+It covers only the tests needed for this task. It does not add permission
+for the steps under "Asking the user", such as production changes or data
+deletion. It also does not bypass a harness or system approval prompt if
+one appears.
+
+## Steps
+
+1. **Finish the change.** Complete the goal from the user's request with the
+   smallest change that works. Fix the case that happened, not every case
+   that could. If you are on the default branch, create a branch first.
+2. **Prove it.** Get proof for every change you made. See "Proof".
+3. **Get feedback.** Use the `sol-loop` skill to verify changes before filing.
+4. **File the PR** by reading [file-pr](../file-pr/SKILL.md) and following
+   it, even when the repository has its own PR skill. Rebase onto the latest
+   default branch first. Add one short line to the description that says how you proved
+   the change.
+5. **Panel review the PR.** Run one round of the `panel-review` skill on the
+   PR head against its base. This request authorizes fixing its accepted
+   findings. Fix them with `sol-loop`, carrying over the step 3 ledger with a
+   fresh round budget: you make the smallest fix, Sol reviews the fix delta,
+   and proof covers it. Decline
+   the rest with a written reason and list them as follow-ups. Push once Sol
+   agrees.
+   If the round reported an accepted blocker or high finding, you may run one
+   more round on the new head to check whether those findings are resolved and
+   whether the fixes regressed anything. Fix its findings the same way.
+   Never run a third panel round. If an accepted blocker you cannot fix still
+   stands, the third round is human review: as a last resort, ask the user
+   (see "Asking the user") and do not merge until they answer.
+6. **Babysit the PR** with the `babysit-pr` skill. First handle the checks and
+   comments that arrived during the panel review, checking each against the
+   latest head. Fix real findings and CI
+   failures. Get proof for each fix before you push it.
+7. **Merge** when the merge gate passes.
+8. **Report** in your final message: the PR link, the merge commit, your proof,
+   the Sol and panel outcomes, and each decision you made for the user.
+
+Feel free to delegate fixes with `delegate_task` to the latest Opus, GPT Sol,
+or Fable at medium to xhigh effort, matching each fix to their strengths as you
+would a reviewer. Give each fixer a self-contained brief, and its own worktree
+when fixes run in parallel. You keep the ledger, the proof, commits, pushes, and
+the PR watch. A fixer of the same model as the reviewer checking its work gets
+a less independent check; weigh that when choosing.
+
+Stay active from step 1 to step 8. If you end your turn while checks or bots are
+pending, the work stops, because nobody will prompt you again. Wait with the
+watcher from `babysit-pr`, so something wakes you when the PR changes. In T3
+Code that is `watch_pull_request`. If you stop before the merge, call
+`unwatch_pull_request` first.
+
+## Proof
+
+Proof is evidence you observed yourself in this session: command output, a
+reproduction, a screenshot. Use the most direct proof the change allows:
+
+- Reproduce the original failure, apply the fix, then watch the same
+  reproduction pass.
+- Run the checks that the repo's CI runs (typecheck, lint, tests).
+- Add one focused test that fails without the fix, when the behavior has none
+  and the repo has a test setup.
+- For UI and runtime behavior, run the app and look at the change. Green mocked
+  tests do not prove that the user experience works. Attach screenshots to the
+  PR when they help and you have a way to upload them.
+
+When you cannot find a way to prove a change, you do not have full confidence.
+Ask the user.
+
+## Merge gate
+
+Full confidence means all of these are true on the latest commit:
+
+- Your proof covers every change in the diff.
+- The panel review is finished, each accepted blocker is fixed, and every
+  other accepted finding is fixed or declined with a written reason.
+- Required checks are green.
+- Review bots have finished, and each finding is fixed or dismissed with a
+  written reason.
+- No human review still requests changes.
+- The branch is up to date with the default branch, and GitHub reports it as
+  mergeable.
+
+Merge with the method the repo uses. Check the allowed methods and recent merged
+PRs. If the repo uses a merge queue or auto-merge, stay until GitHub reports the
+PR as merged. Merge through branch protection as configured. Never use `--admin`
+or other bypasses. You can ignore automated reviews that request "needs human
+review" if you have high confidence in your changes.
+
+## Asking the user
+
+A question in a normal message goes unseen, and the thread looks done. To ask
+the user something, use the harness's question tool so the thread shows that
+it is waiting: `AskUserQuestion` in Claude Code, `request_user_input` in Codex,
+or the question tool your harness has. Put all the context in the question:
+the PR link, what blocks you, and the options with your recommendation first.
+
+Ask only when you cannot continue alone:
+
+- You cannot prove the change.
+- An accepted blocker you cannot fix remains after the panel rounds.
+- The merge gate cannot pass, and you cannot fix that yourself.
+- The next step is outside the grant above: deleting data, touching production,
+  changing things outside the repo, closing a PR, or force-pushing any other
+  branch.
+- The goal is ambiguous in a way that changes the result.
+- Another PR makes this one obsolete.
+
+Decide everything else yourself with sensible defaults, and list those decisions
+in the report.
+
+If no question tool is available, or the tool returns no answer, take the safe
+path: leave the PR open and unmerged, and start your final message with the
+question.
