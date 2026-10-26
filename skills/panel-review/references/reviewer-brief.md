@@ -45,12 +45,23 @@ Respond in this format:
 
 ## Delivery
 
-Choose a supported execution mechanism that lets the lead receive results before
-its task ends. Concurrent, sequential, and foreground execution are all valid.
-Check result routing and lifetime limits before using background reviewers,
-especially if the lead is itself delegated work. If results cannot be collected,
-change the execution method or report incomplete coverage; dispatch is not
-completion. Ensure reviewers know how to return partial results or blockers.
+Spawn each reviewer with T3 Code's `delegate_task` (`role: "review"`,
+`mode: "async"`), with its own `clientRequestId`, and keep each returned
+`taskId`. First call `orchestrator_capabilities`, searching for each model
+family, to find the latest model IDs; do not hardcode them. Set reasoning effort
+in `target.options` with the option the model reports (for example `effort` for
+Claude models, `reasoningEffort` for GPT models), choose only levels it offers,
+and check that the returned provider, model, and options match the request.
+
+Delegated reviewers start without conversation history, so the prompt must stand
+on its own. Wait for completion notifications instead of polling; use
+`task_status` only for a reviewer that seems stuck and `task_cancel` for one you
+no longer need. `childThreadId` is storage, not a follow-up target: send any
+follow-up as a new `delegate_task` with the original brief and what has changed.
+If the lead is itself delegated work, confirm it can receive its reviewers'
+results before relying on them. If results cannot be collected, report
+incomplete coverage; dispatch is not completion. Ensure reviewers know how to
+return partial results or blockers.
 
 ## Review Rules
 
