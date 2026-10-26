@@ -46,17 +46,29 @@ one appears.
    smallest change that works. Fix the case that happened, not every case
    that could. If you are on the default branch, create a branch first.
 2. **Prove it.** Get proof for every change you made. See "Proof".
-3. **Get feedback.** Use the `sol-loop` skill to verify changes.
+3. **Get feedback.** Use the `sol-loop` skill to verify changes before filing.
 4. **File the PR** with the `file-pr` skill. Rebase onto the latest default
    branch first. Add one short line to the description that says how you proved
    the change.
-5. **Babysit the PR** with the `babysit-pr` skill. Fix real findings and CI
+5. **Panel review the PR.** Run one round of the `panel-review` skill on the
+   PR head against its base. This request authorizes fixing its accepted
+   findings. Fix them with `sol-loop`: you make the smallest fix, Sol reviews
+   it, and proof covers it. Decline the rest with a written reason and list
+   them as follow-ups. Push once Sol agrees.
+   If the round reported an accepted blocker or high finding, you may run one
+   more round on the new head. Ask it whether those findings are resolved and
+   whether the fixes regressed anything. Fix its findings the same way.
+   Never run a third panel round. If a true blocker still stands after that,
+   the third round is human review: as a last resort, ask the user (see
+   "Asking the user") and do not merge until they answer.
+6. **Babysit the PR** with the `babysit-pr` skill. First handle the checks and
+   comments that arrived during the panel review. Fix real findings and CI
    failures. Get proof for each fix before you push it.
-6. **Merge** when the merge gate passes.
-7. **Report** in your final message: the PR link, the merge commit, your proof,
-   and each decision you made for the user.
+7. **Merge** when the merge gate passes.
+8. **Report** in your final message: the PR link, the merge commit, your proof,
+   the Sol and panel outcomes, and each decision you made for the user.
 
-Stay active from step 1 to step 7. If you end your turn while checks or bots are
+Stay active from step 1 to step 8. If you end your turn while checks or bots are
 pending, the work stops, because nobody will prompt you again. Wait with the
 watcher from `babysit-pr`, so something wakes you when the PR changes. In T3
 Code that is `watch_pull_request`. If you stop before the merge, call
@@ -84,6 +96,8 @@ Ask the user.
 Full confidence means all of these are true on the latest commit:
 
 - Your proof covers every change in the diff.
+- The panel review is finished, and each accepted finding is fixed or declined
+  with a written reason.
 - Required checks are green.
 - Review bots have finished, and each finding is fixed or dismissed with a
   written reason.
@@ -108,6 +122,7 @@ the PR link, what blocks you, and the options with your recommendation first.
 Ask only when you cannot continue alone:
 
 - You cannot prove the change.
+- A true blocker survives the second panel round.
 - The merge gate cannot pass, and you cannot fix that yourself.
 - The next step is outside the grant above: deleting data, touching production,
   changing things outside the repo, closing a PR, or force-pushing any other
