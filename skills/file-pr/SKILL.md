@@ -47,7 +47,8 @@ The overview is the opening of the description and the part most people read.
 Write it for a teammate who knows the product but has not seen this code.
 
 - Open with the problem as someone experienced it, drawn from the user's
-  original request. Then say what is different now. Two to four sentences.
+  original request. Then say what is different now. Keep it short enough to
+  take in at a glance.
 - Use everyday words. Name things by what people see or do, not by function,
   file, flag, or class names. If a technical term is unavoidable, say what it
   means.
