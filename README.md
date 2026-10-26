@@ -36,13 +36,15 @@ npx skills update    # update installed skills
 | [`leaving-pr-comments`](skills/leaving-pr-comments) | Formats agent-authored GitHub comments with an attribution callout and a direct style. | Whenever an agent comments on GitHub on your behalf. |
 | [`file-pr`](skills/file-pr) | Commits and opens a pull request whose overview explains the problem and the result in plain words before any technical detail. | When you invoke it explicitly, and whenever `full-send` or `full-stop` files a PR, even if the repository has its own PR skill. |
 
+`full-send` and `full-stop` call on `sol-loop`, `file-pr`, `panel-review`, and `babysit-pr`, and `full-stop` also reads `full-send`, so install them together in the same scope.
+
 ## Contributing & authoring
 
 See [AGENTS.md](AGENTS.md) for layout rules and validation before adding or editing a skill.
 
 ## Credits
 
-- [`sol-loop`](skills/sol-loop), [`full-send`](skills/full-send), [`full-stop`](skills/full-stop), [`babysit-pr`](skills/babysit-pr), and [`leaving-pr-comments`](skills/leaving-pr-comments) come from [`t3dotgg/tstack`](https://github.com/t3dotgg/tstack/tree/main/skills), Copyright (c) 2026 Theo Browne, used under the MIT License. [`file-pr`](skills/file-pr) adapts that repository's `file-pr` skill.
+- [`sol-loop`](skills/sol-loop), [`full-send`](skills/full-send), [`full-stop`](skills/full-stop), [`babysit-pr`](skills/babysit-pr), and [`leaving-pr-comments`](skills/leaving-pr-comments) are adapted from [`t3dotgg/tstack`](https://github.com/t3dotgg/tstack/tree/main/skills), Copyright (c) 2026 Theo Browne, used under the MIT License. [`file-pr`](skills/file-pr) adapts that repository's `file-pr` skill.
 
 ## License
 

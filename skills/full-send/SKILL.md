@@ -53,21 +53,30 @@ one appears.
    the change.
 5. **Panel review the PR.** Run one round of the `panel-review` skill on the
    PR head against its base. This request authorizes fixing its accepted
-   findings. Fix them with `sol-loop`: you make the smallest fix, Sol reviews
-   it, and proof covers it. Decline the rest with a written reason and list
-   them as follow-ups. Push once Sol agrees.
+   findings. Fix them with `sol-loop`, continuing the step 3 ledger: you make
+   the smallest fix, Sol reviews the fix delta, and proof covers it. Decline
+   the rest with a written reason and list them as follow-ups. Push once Sol
+   agrees.
    If the round reported an accepted blocker or high finding, you may run one
-   more round on the new head. Ask it whether those findings are resolved and
+   more round on the new head to check whether those findings are resolved and
    whether the fixes regressed anything. Fix its findings the same way.
-   Never run a third panel round. If a true blocker still stands after that,
-   the third round is human review: as a last resort, ask the user (see
-   "Asking the user") and do not merge until they answer.
+   Never run a third panel round. If an accepted blocker you cannot fix still
+   stands, the third round is human review: as a last resort, ask the user
+   (see "Asking the user") and do not merge until they answer.
 6. **Babysit the PR** with the `babysit-pr` skill. First handle the checks and
-   comments that arrived during the panel review. Fix real findings and CI
+   comments that arrived during the panel review, checking each against the
+   latest head. Fix real findings and CI
    failures. Get proof for each fix before you push it.
 7. **Merge** when the merge gate passes.
 8. **Report** in your final message: the PR link, the merge commit, your proof,
    the Sol and panel outcomes, and each decision you made for the user.
+
+Feel free to delegate fixes with `delegate_task` to the latest Opus, GPT Sol,
+or Fable at medium to xhigh effort, matching each fix to their strengths as you
+would a reviewer. Give each fixer a self-contained brief, and its own worktree
+when fixes run in parallel. You keep the ledger, the proof, commits, pushes, and
+the PR watch. A fixer of the same model as the reviewer checking its work gets
+a less independent check; weigh that when choosing.
 
 Stay active from step 1 to step 8. If you end your turn while checks or bots are
 pending, the work stops, because nobody will prompt you again. Wait with the
@@ -97,8 +106,8 @@ Ask the user.
 Full confidence means all of these are true on the latest commit:
 
 - Your proof covers every change in the diff.
-- The panel review is finished, and each accepted finding is fixed or declined
-  with a written reason.
+- The panel review is finished, each accepted blocker is fixed, and every
+  other accepted finding is fixed or declined with a written reason.
 - Required checks are green.
 - Review bots have finished, and each finding is fixed or dismissed with a
   written reason.
@@ -123,7 +132,7 @@ the PR link, what blocks you, and the options with your recommendation first.
 Ask only when you cannot continue alone:
 
 - You cannot prove the change.
-- A true blocker survives the second panel round.
+- An accepted blocker you cannot fix remains after the panel rounds.
 - The merge gate cannot pass, and you cannot fix that yourself.
 - The next step is outside the grant above: deleting data, touching production,
   changing things outside the repo, closing a PR, or force-pushing any other

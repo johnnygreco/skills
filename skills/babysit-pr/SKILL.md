@@ -51,8 +51,12 @@ unresolved threads, PR closed), and 2 on bad input.
 - `ready` (default): required checks green, Greptile or Macroscope reviewed the
   head, and no unresolved threads. Use this to babysit.
 - `green`: required checks only. Use it when the repo has no Greptile or
-  Macroscope.
+  Macroscope. In a repo with no CI checks, neither `green` nor `ready` exits 0;
+  use `any-change` and check the merge gate yourself.
 - `any-change`: exit on the first event.
+
+It needs a `gh` release that supports `gh pr checks --json`; older releases
+make it exit 1 with "unknown flag: --json".
 
 In Claude Code, run it with the Monitor tool (`timeout_ms: 3600000`), so each
 line wakes you. Without a monitor, run it as one long command. It ends on its
@@ -60,7 +64,9 @@ own.
 
 Start it again after you push, after you handle an exit 1, and after a resume.
 It remembers what it already reported, so nothing that arrived in between is
-lost. If it says another pid already watches the PR, do not start a second one.
+lost. Its first run for a PR, or a run after more than six hours without one,
+records what already exists without reporting it, so start it before you read
+the existing checks and comments. If it says another pid already watches the PR, do not start a second one.
 Kill the old one only if its events do not reach you.
 
 With either watcher: when an event needs no action, end your turn without a

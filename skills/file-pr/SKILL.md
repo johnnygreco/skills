@@ -28,8 +28,7 @@ writing rules.
 4. Commit one coherent change per commit. Follow the repository's commit style
    from `git log`; otherwise write a one-line subject in the imperative mood and
    sentence case, with no trailing period, that says what the change does. Do
-   not add `Co-Authored-By`, "Generated with", or other generator trailers unless
-   the repository uses them.
+   not add `Co-Authored-By`, "Generated with", or other AI attribution.
 
 ## Write the Title
 
@@ -47,7 +46,8 @@ The overview is the opening of the description and the part most people read.
 Write it for a teammate who knows the product but has not seen this code.
 
 - Open with the problem as someone experienced it, drawn from the user's
-  original request. Then say what is different now. Keep it short enough to
+  original request; if the request names no problem, say what was asked for
+  and why, without inventing one. Then say what is different now. Keep it short enough to
   take in at a glance.
 - Use everyday words. Name things by what people see or do, not by function,
   file, flag, or class names. If a technical term is unavoidable, say what it
@@ -79,11 +79,8 @@ overview followed by these sections:
 - **Deferred:** only work that was asked for and is not in this pull request,
   linked to its issue. Omit the section when there is none.
 
-Add `Closes #<n>` when the pull request resolves an issue. End the description
-with the public model name and harness that made the changes, for example
-`Created with <model> in <harness>.` Include subagent models that wrote part
-of the change. Use the model name the harness reports; if it reports none,
-name the harness without guessing a model.
+Add `Closes #<n>` when the pull request resolves an issue. Do not add AI
+authorship credits, "Created with" or "Generated with" footers, or badges.
 
 Write each paragraph and list item on one line: GitHub renders every newline in
 a pull request body as a line break. Before submitting, check the title,

@@ -14,6 +14,9 @@ slowest member of the panel.
 Adapt the template to the assignment and omit irrelevant fields. Include the
 applicable Review Rules and Response Format below. Keep suspected findings,
 implementation chat history, and other reviewers' conclusions out of the prompt.
+When a coordinating workflow asks whether earlier findings are resolved, include
+those findings as raised and the fix delta, and ask whether each is resolved and
+whether the delta regressed anything.
 
 ```text
 You are <reviewer name>, an independent reviewer. Inspect without editing.
