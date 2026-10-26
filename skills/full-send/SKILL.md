@@ -53,8 +53,9 @@ one appears.
    the change.
 5. **Panel review the PR.** Run one round of the `panel-review` skill on the
    PR head against its base. This request authorizes fixing its accepted
-   findings. Fix them with `sol-loop`, continuing the step 3 ledger: you make
-   the smallest fix, Sol reviews the fix delta, and proof covers it. Decline
+   findings. Fix them with `sol-loop`, carrying over the step 3 ledger with a
+   fresh round budget: you make the smallest fix, Sol reviews the fix delta,
+   and proof covers it. Decline
    the rest with a written reason and list them as follow-ups. Push once Sol
    agrees.
    If the round reported an accepted blocker or high finding, you may run one
