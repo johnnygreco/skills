@@ -47,8 +47,9 @@ one appears.
    that could. If you are on the default branch, create a branch first.
 2. **Prove it.** Get proof for every change you made. See "Proof".
 3. **Get feedback.** Use the `sol-loop` skill to verify changes before filing.
-4. **File the PR** with the `file-pr` skill. Rebase onto the latest default
-   branch first. Add one short line to the description that says how you proved
+4. **File the PR** by reading [file-pr](../file-pr/SKILL.md) and following
+   it, even when the repository has its own PR skill. Rebase onto the latest
+   default branch first. Add one short line to the description that says how you proved
    the change.
 5. **Panel review the PR.** Run one round of the `panel-review` skill on the
    PR head against its base. This request authorizes fixing its accepted

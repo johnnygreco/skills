@@ -34,6 +34,7 @@ npx skills update    # update installed skills
 | [`full-stop`](skills/full-stop) | Runs the `full-send` workflow but stops with the PR ready for you to merge. | When you say "full stop" and want to make the final merge call. |
 | [`babysit-pr`](skills/babysit-pr) | Watches a PR through CI and bot review with an event-driven watcher, fixing real findings and declining the rest. | When asked to monitor, watch, or babysit a PR. |
 | [`leaving-pr-comments`](skills/leaving-pr-comments) | Formats agent-authored GitHub comments with an attribution callout and a direct style. | Whenever an agent comments on GitHub on your behalf. |
+| [`file-pr`](skills/file-pr) | Commits and opens a pull request whose overview explains the problem and the result in plain words before any technical detail. | When you invoke it explicitly, and whenever `full-send` or `full-stop` files a PR, even if the repository has its own PR skill. |
 
 ## Contributing & authoring
 
@@ -41,7 +42,7 @@ See [AGENTS.md](AGENTS.md) for layout rules and validation before adding or edit
 
 ## Credits
 
-- [`sol-loop`](skills/sol-loop), [`full-send`](skills/full-send), [`full-stop`](skills/full-stop), [`babysit-pr`](skills/babysit-pr), and [`leaving-pr-comments`](skills/leaving-pr-comments) come from [`t3dotgg/tstack`](https://github.com/t3dotgg/tstack/tree/main/skills), Copyright (c) 2026 Theo Browne, used under the MIT License.
+- [`sol-loop`](skills/sol-loop), [`full-send`](skills/full-send), [`full-stop`](skills/full-stop), [`babysit-pr`](skills/babysit-pr), and [`leaving-pr-comments`](skills/leaving-pr-comments) come from [`t3dotgg/tstack`](https://github.com/t3dotgg/tstack/tree/main/skills), Copyright (c) 2026 Theo Browne, used under the MIT License. [`file-pr`](skills/file-pr) adapts that repository's `file-pr` skill.
 
 ## License
 
