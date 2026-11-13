@@ -68,6 +68,10 @@ return partial results or blockers.
 
 ## Review Rules
 
+- No nitpicks. Skip style, naming, and polish unless it hides a real problem.
+- Do not recommend over-engineering or scope creep. Prefer the smallest remedy;
+  new abstractions, options, guards, or generality need a concrete trigger in
+  supported use. Flag code the target adds beyond what its intent requires.
 - Inspect the target and directly related code or artifacts before drawing
   conclusions. Trace callers, contracts, and failure paths as needed.
 - Concentrate on your assignment. If evidence reveals a material problem across
