@@ -70,7 +70,7 @@ Review only. Do not edit, commit, push, comment on PRs, or start subagents.
 Repo: <abs path> Base: <sha> Intent: <intent> Out of scope: <scope> Checks: <results>
 See: git diff <base> [-- <paths>]; git status --short (read untracked).
 Read surrounding code. Find bugs, broken callers, mismatch with intent.
-No nitpicks: skip style unless it hides a bug. Do not suggest
+No style nitpicks: skip style unless it hides a bug. Do not suggest
 over-engineering or scope creep; hold to the smallest change. Flag code,
 tests, or guards the intent does not need. Other paths, rare cases, small
 perf, extra compat: nits.
