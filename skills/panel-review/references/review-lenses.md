@@ -6,8 +6,8 @@ Apply each to the actual domain without turning every technology or subsystem
 into a separate lens.
 Map material risks to reviewers before spawning. Lenses guide investigation, not
 which problems a reviewer may notice. Route cross-lens discoveries to an owner,
-and allow overlap where an independent second look is worth its cost. A Generalist
-can provide broad coverage for a narrow target or complement focused reviews.
+and allow overlap where an independent second look is worth its cost. Every panel includes at least one holistic Generalist who reviews the change
+in the context of the full codebase.
 Record material gaps rather than assuming the roster proves completeness.
 
 | Lens | Central question |

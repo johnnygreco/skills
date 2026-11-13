@@ -8,6 +8,12 @@ description: Panel review or deep review.
 Design a panel around the target's actual risks, spawn independent review agents,
 monitor and steer their work, and verify their findings before reporting them.
 
+We want material problems, not nitpicks. Do not report taste, style, or minor
+polish. Guard against over-engineering and scope creep in both the target and
+the panel's own recommendations: favor the smallest change that solves the
+stated problem, and treat added abstractions, options, or hypothetical-case
+handling as costs that need a concrete justification.
+
 ## Choose the Mode
 
 Produce a report in the conversation by default. Review does not authorize edits
@@ -45,13 +51,19 @@ Read the [lens index](references/review-lenses.md) and only the selected lens
 files. Identify the target's material risks and give each an owner. Lenses focus
 attention; they do not prohibit noticing problems across boundaries. Combine,
 specialize, or invent lenses to fit the target. Give a custom lens a clear question,
-scope, and evidence standard. Use a Generalist for broad coverage when useful,
-and allow intentional overlap for consequential risks. Record material gaps.
+scope, and evidence standard. Allow intentional overlap for consequential risks.
+Record material gaps.
+
+Always include at least one holistic reviewer, using the Generalist lens, who
+judges the change in the context of the full codebase rather than the diff
+alone: whether it fits existing architecture and conventions, duplicates or
+bypasses existing code, or breaks callers and assumptions elsewhere. For a
+non-code target, the equivalent is the whole artifact and the system it serves.
 
 Apply repository standards across the selected lenses and keep documented-rule
 violations distinguishable from gaps in the requested behavior. Cover meaningful
-risks with the smallest useful panel. One independent Generalist may cover a
-narrow target; several focused reviewers may suit substantial or varied risks.
+risks with the smallest useful panel. The holistic Generalist alone may cover a
+narrow target; add focused reviewers for substantial or varied risks.
 Size by complexity, uncertainty, and consequence, not line or module count alone.
 
 Choose each reviewer's model and reasoning effort as deliberately as its lens,
@@ -126,8 +138,8 @@ report the gap. Stop owned checks and release workers as needed before finishing
   Assess design proportionality when structure or maintenance is a relevant risk,
   using concrete costs and project constraints. Assess a suggested remedy's
   complexity as well as its benefit; a valid finding may have an overbuilt proposed
-  fix. Exclude taste-only nits, speculative rewrites, and issues below the agreed
-  reporting bar. Record consequential unresolved questions as limitations.
+  fix. Exclude nits, taste-only comments, speculative rewrites, scope expansion,
+  and issues below the agreed reporting bar. Record consequential unresolved questions as limitations.
 
 ## Report
 
