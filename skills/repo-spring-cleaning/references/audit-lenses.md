@@ -41,9 +41,10 @@ running every item mechanically.
 - Look for needless abstraction, duplicated concepts, unclear ownership,
   dead branches, stale compatibility layers, hidden global state, and files that
   have become incohesive.
-- Prefer small simplifications that reduce future reasoning cost.
-- Avoid broad rewrites unless the evidence shows localized fixes cannot address
-  the health problem.
+- Prefer simplifications that reduce future reasoning cost.
+- Size a change to the problem the evidence shows. A structural problem needs a
+  structural fix, planned as a reviewed slice; tidying its symptoms file by file
+  leaves it in place. Do not rewrite on speculation.
 
 ## Documentation And Onboarding
 

@@ -99,11 +99,12 @@ for every comment posted on the user's behalf.
 Screenshots and videos help as well, when you have a way to upload them.
 
 Keep the PR at the size the user's goal needs. Review loops tend to grow a
-PR one cheap-looking fix at a time. Fix real bugs in the intended case.
-Decline the rest with a written reason, and list them as follow-ups:
-unneeded tests, guards for edge cases that do not matter, extra integration
-or compatibility, and small performance costs. Prefer the fix that deletes or
-narrows code.
+PR one cheap-looking fix at a time. Fix real bugs in the intended case, and
+fix them at the cause: a guard, retry, or special case where the symptom
+showed leaves the bug in place. Decline the rest with a written reason, and
+list them as follow-ups: unneeded tests, guards for edge cases that do not
+matter, extra integration or compatibility, and small performance costs. When
+two fixes both reach the cause, prefer the one that deletes or narrows code.
 
 ## Base branch and merging
 

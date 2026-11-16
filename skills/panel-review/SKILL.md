@@ -9,20 +9,20 @@ Design a panel around the target's actual risks, spawn independent review agents
 monitor and steer their work, and verify their findings before reporting them.
 
 We want material problems, not nitpicks. Do not report taste, style, or minor
-polish. Guard against over-engineering and scope creep in both the target and
-the panel's own recommendations: favor the smallest change that solves the
-stated problem, and treat added abstractions, options, or hypothetical-case
-handling as costs that need a concrete justification.
+polish. Keep scope on the stated problem, and hold both the target and the
+panel's own recommendations to sound engineering in both directions. An added
+abstraction, option, or handler for a hypothetical case is a cost that needs a
+concrete justification. A patch that silences a symptom and leaves its cause or
+a design problem in place is a cost too. Judge a change by whether it solves the
+problem where the problem originates, not by the size of its diff.
 
 ## Choose the Mode
 
 Produce a report in the conversation by default. Review does not authorize edits
 to the reviewed artifacts, commits, pushes, or posting to a PR or tracker.
 
-A request to fix findings authorizes those fixes, not a repeated review cycle:
-fix the accepted findings, validate, and verify the delta in proportion to its
-size, with your own check for a small delta or one independent reviewer for a
-substantial one.
+A request to fix findings authorizes those fixes, not a repeated review cycle.
+Follow [Fix Findings When Asked](#fix-findings-when-asked) after the report.
 
 ## Establish the Target
 
@@ -102,7 +102,8 @@ later verification. Intervene when progress, scope, or evidence warrants it:
 - Redirect scope creep and over-engineering early. Ask which supported user or
   caller can encounter the problem, whether an existing constraint prevents it, and
   what requirement or concrete maintenance cost justifies the proposed change.
-  Seek the simplest adequate remedy.
+  Seek the simplest remedy that resolves the cause, and question a recommendation
+  that only guards the symptom as readily as one that overbuilds.
 - Supply missing context or narrow a stalled investigation. Stop redundant work
   while preserving meaningful coverage. Follow downstream evidence as needed
   without expanding the authorized repair scope. Route material cross-lens
@@ -134,17 +135,24 @@ report the gap. Stop owned checks and release workers as needed before finishing
   can still be in the panel's scope. Include material, relevant follow-ups that
   respect the user's reporting scope; do not turn review into an unrelated audit.
   Acceptance includes a finding in the report; it does not authorize edits.
-- Keep defects and documented-rule violations distinct from design judgments.
-  Assess design proportionality when structure or maintenance is a relevant risk,
-  using concrete costs and project constraints. Assess a suggested remedy's
-  complexity as well as its benefit; a valid finding may have an overbuilt proposed
-  fix. Exclude nits, taste-only comments, speculative rewrites, scope expansion,
-  and issues below the agreed reporting bar. Record consequential unresolved questions as limitations.
+- Keep defects, documented-rule violations, and design problems distinct, and
+  accept each on its own evidence. A design problem is substantiated when the
+  code shows who pays for it: a likely change that must touch several places, a
+  caller that must know another module's internals, state with more than one
+  writer. Weigh it against project constraints. A change that is under-designed
+  for its problem is as reportable as one that is overbuilt. Exclude nits,
+  taste-only comments, speculative rewrites, scope expansion, and issues below
+  the agreed reporting bar.
+- Assess whether a suggested remedy reaches the cause and what it adds; a valid
+  finding may come with an overbuilt fix or with one that only masks the
+  symptom. The size of the right remedy does not lower a finding's standing.
+  Record consequential unresolved questions as limitations.
 
 ## Report
 
-Lead with verified findings ordered by impact: location, trigger, evidence,
-consequence, and a focused recommendation. Retain lens labels and requirement or
+Lead with verified findings ordered by impact. For each, give the location, the
+trigger or the design cost, the evidence, the cause, the consequence, and a
+recommendation that addresses the cause. Retain lens labels and requirement or
 standards citations. If none survive verification, say no actionable findings
 were found within the reviewed scope.
 
@@ -164,3 +172,26 @@ Include a compact review record:
 Return the report to any coordinating workflow, which owns storage, publishing,
 and completion decisions. Finish after accounting for the panel and delivering
 the report; do not keep waiting for already-completed work.
+
+## Fix Findings When Asked
+
+Fix the accepted findings, validate, and verify the delta in proportion to its
+size: your own check for a small delta, or one independent reviewer for a
+substantial one. Ask that reviewer whether each finding is resolved at its
+cause and whether the delta introduced a regression. A fix that handles only
+the reported trigger is partial.
+
+Fix each finding at its cause. Correct the code or design that made the issue
+possible, and let the cause set the size of the change. Aiming for the smallest
+diff produces guards and special cases that hide the trigger and leave the
+problem in place.
+
+- Ask whether the state that triggered a defect can legitimately occur. If it
+  can, handling that state is the fix. If it should never exist, a guard, retry,
+  swallowed error, clamped value, or discarded state only hides the defect; fix
+  what produces the state.
+- When a fix does not resolve its finding, write down the assumption the attempt
+  relied on and test it directly before trying another fix on the same
+  assumption.
+- When the cause lies outside what the user authorized, report it and the
+  decision needed instead of patching around it.

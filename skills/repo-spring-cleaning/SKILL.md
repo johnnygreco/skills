@@ -6,8 +6,9 @@ description: Repository spring cleaning, codebase maintenance, or a repo audit w
 # Repo Spring Cleaning
 
 Run an evidence-based maintenance pass that leaves the repository cleaner,
-better documented, and easier to keep healthy. Prefer small, defensible fixes
-over speculative rewrites.
+better documented, and easier to keep healthy. Let evidence set the size of each
+fix: resolve a problem where it originates instead of tidying around it, and do
+not rewrite on speculation.
 
 ## Contract
 

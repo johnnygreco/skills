@@ -10,6 +10,12 @@ Does the behavior hold across supported situations, including failure?
   result. Identify an actual sequence that can violate the contract.
 - Determine whether the change introduces a problem or exposes a previously
   dormant one. Separate unrelated existing defects.
+- When the change is a fix, check that it removes the cause and not only the
+  reported instance. Ask whether the state that triggered the failure can
+  legitimately occur. If it can, handling it is the fix. If it should never
+  exist, a guard, retry, swallowed error, clamped value, or discarded state
+  hides the defect, and the fix belongs where that state is produced. Look for
+  sibling paths that reach the same failure.
 
 Before accepting a hypothetical failure, inspect the caller and any upstream
 constraint that could prevent it. Connect the finding to a reachable scenario and

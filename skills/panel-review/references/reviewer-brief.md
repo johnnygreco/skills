@@ -69,9 +69,16 @@ return partial results or blockers.
 ## Review Rules
 
 - No nitpicks. Skip style, naming, and polish unless it hides a real problem.
-- Do not recommend over-engineering or scope creep. Prefer the smallest remedy;
-  new abstractions, options, guards, or generality need a concrete trigger in
-  supported use. Flag code the target adds beyond what its intent requires.
+- Do not recommend over-engineering or scope creep. New abstractions, options,
+  guards, or generality need a concrete trigger in supported use. Flag code the
+  target adds beyond what its intent requires.
+- Do not recommend a patch over a symptom either. Trace an issue to its cause
+  and name it under Cause. Ask whether the state that triggers a defect can
+  legitimately occur: if it can, the code that fails on it owns the defect; if
+  it should never exist, the code that produces it does. Recommend the
+  correction there, and say so when it is larger than a local patch. A guard,
+  retry, swallowed error, or special case placed where the symptom surfaced
+  leaves the defect to return through the next path.
 - Inspect the target and directly related code or artifacts before drawing
   conclusions. Trace callers, contracts, and failure paths as needed.
 - Concentrate on your assignment. If evidence reveals a material problem across
@@ -85,9 +92,16 @@ return partial results or blockers.
   broadening the investigation. Otherwise, record them under Limitations.
 - Report actionable issues with concrete evidence, a plausible trigger, and a
   consequence at this project's scale. An empty findings list is a valid result.
-- Weigh how likely supported use is to reach a trigger against what the remedy
-  would add. An edge case no supported user is likely to meet, or one whose
-  remedy needs new machinery, belongs under Follow-ups rather than Findings.
+- Report a design problem when the code shows who pays for it: a likely change
+  that must touch several places, a caller that must know another module's
+  internals, state with more than one writer. A change that is under-designed
+  for its problem is as reportable as one that is overbuilt. A preference with
+  no such cost is taste; leave it out.
+- Decide whether an issue is a finding by how likely supported use is to reach
+  it and what it costs when reached. An edge case no supported user is likely
+  to meet belongs under Follow-ups. The size of the remedy does not decide: a
+  real issue whose correction is structural is still a finding, and its
+  recommendation says what the correction involves.
 - Distinguish source inspection, execution-path reasoning, and observed test or
   reproduction results. Identify unverified assumptions behind consequential
   claims and seek stronger evidence only when it could change whether a finding
@@ -99,7 +113,7 @@ return partial results or blockers.
 - Stop refining a reproduction once the trigger, consequence, and needed severity
   are established. Bound expensive checks, report partial evidence if they stall,
   and stop owned processes before returning. An unfinished check is not a pass.
-- Distinguish defects, documented rule violations, and design judgments. Cite the
+- Distinguish defects, documented rule violations, and design problems. Cite the
   requirement or rule for a claimed violation; a heuristic is not a requirement.
 - Apply relevant repository standards and recorded decisions within each lens.
   Separate documented requirements from preferences inferred from nearby code.
@@ -134,13 +148,14 @@ Verdict: clean | findings | incomplete
 
 Findings:
 - Severity: blocker | high | medium | low
-  Kind: defect | documented-rule violation | design judgment
+  Kind: defect | documented-rule violation | design problem
   Lens: <lens>
   Location: <file:line or artifact section>
-  Issue: <concrete problem and triggering scenario>
+  Issue: <concrete problem, with the triggering scenario for a defect or the change or caller that pays for a design problem>
   Evidence: <source/path reasoning or observed result, with locations>
-  Impact: <observable consequence>
-  Recommendation: <focused remedy, without implementing it>
+  Cause: <the code or design decision that makes the issue possible, or not traced>
+  Impact: <observable consequence or concrete maintenance cost>
+  Recommendation: <remedy at the cause, without implementing it>
 
 Follow-ups: <material, relevant issues outside the panel's scope or pre-existing, with location and trigger; or none>
 Validation: <method, commands, tested version, and results, or not run>
