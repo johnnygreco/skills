@@ -9,12 +9,12 @@ Design a panel around the target's actual risks, spawn independent review agents
 monitor and steer their work, and verify their findings before reporting them.
 
 We want material problems, not nitpicks. Do not report taste, style, or minor
-polish. Keep scope on the stated problem, and hold both the target and the
-panel's own recommendations to sound engineering in both directions. An added
-abstraction, option, or handler for a hypothetical case is a cost that needs a
-concrete justification. A patch that silences a symptom and leaves its cause or
-a design problem in place is a cost too. Judge a change by whether it solves the
-problem where the problem originates, not by the size of its diff.
+polish. Keep scope on the stated problem. Count two kinds of cost, in the target
+and in the panel's own recommendations. One is an added abstraction, option, or
+handler for a hypothetical case, which needs a concrete justification. The other
+is a patch that silences a symptom and leaves its cause or a design problem in
+place. Judge a change by whether it solves the problem where the problem
+originates, not by the size of its diff.
 
 ## Choose the Mode
 
@@ -137,9 +137,10 @@ report the gap. Stop owned checks and release workers as needed before finishing
   Acceptance includes a finding in the report; it does not authorize edits.
 - Keep defects, documented-rule violations, and design problems distinct, and
   accept each on its own evidence. A design problem is substantiated when the
-  code shows who pays for it: a likely change that must touch several places, a
-  caller that must know another module's internals, state with more than one
-  writer. Weigh it against project constraints. A change that is under-designed
+  code shows a concrete cost, for example a likely change that must touch
+  several places, a caller that must know another module's internals, or state
+  that several places update with no single owner. Weigh it against project
+  constraints. A change that is under-designed
   for its problem is as reportable as one that is overbuilt. Exclude nits,
   taste-only comments, speculative rewrites, scope expansion, and issues below
   the agreed reporting bar.
@@ -175,16 +176,10 @@ the report; do not keep waiting for already-completed work.
 
 ## Fix Findings When Asked
 
-Fix the accepted findings, validate, and verify the delta in proportion to its
-size: your own check for a small delta, or one independent reviewer for a
-substantial one. Ask that reviewer whether each finding is resolved at its
-cause and whether the delta introduced a regression. A fix that handles only
-the reported trigger is partial.
-
-Fix each finding at its cause. Correct the code or design that made the issue
-possible, and let the cause set the size of the change. Aiming for the smallest
-diff produces guards and special cases that hide the trigger and leave the
-problem in place.
+Fix each accepted finding at its cause. Correct the code or design that made the
+issue possible, and let the cause set the size of the change. Aiming for the
+smallest diff produces guards and special cases that hide the trigger and leave
+the problem in place.
 
 - Ask whether the state that triggered a defect can legitimately occur. If it
   can, handling that state is the fix. If it should never exist, a guard, retry,
@@ -195,3 +190,9 @@ problem in place.
   assumption.
 - When the cause lies outside what the user authorized, report it and the
   decision needed instead of patching around it.
+
+Validate, then verify the delta in proportion to its size: your own check for a
+small delta, or one independent reviewer for a substantial one. Either way,
+check whether each finding is resolved at its cause and whether the delta
+introduced a regression. A fix that handles only the reported trigger is
+partial.

@@ -12,8 +12,9 @@ What material issue might a focused review overlook across the target as a whole
   and documented-rule violations.
 - Where another reviewer owns a lens, your independent read of the same ground
   is the point; do not skip an area because someone else covers it.
-- Hold the same evidence standard as a focused lens: concrete trigger, location,
-  and observable consequence.
+- Hold the same evidence standard as a focused lens: a location, and either a
+  concrete trigger and observable consequence or, for a design problem, its
+  concrete cost.
 
 Every panel includes at least one Generalist. Use it for broad coverage and to
 connect risks across focused assignments. It does not replace the lead's coverage accounting or imply that

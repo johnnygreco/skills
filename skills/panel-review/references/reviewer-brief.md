@@ -90,11 +90,13 @@ return partial results or blockers.
 - If you can message the lead mid-review, send brief progress updates at
   meaningful milestones or when blocked, and flag scope questions before
   broadening the investigation. Otherwise, record them under Limitations.
-- Report actionable issues with concrete evidence, a plausible trigger, and a
-  consequence at this project's scale. An empty findings list is a valid result.
-- Report a design problem when the code shows who pays for it: a likely change
-  that must touch several places, a caller that must know another module's
-  internals, state with more than one writer. A change that is under-designed
+- Report actionable issues with concrete evidence and a consequence at this
+  project's scale: for a defect, a plausible trigger; for a design problem, its
+  concrete cost. An empty findings list is a valid result.
+- Report a design problem when the code shows a concrete cost, for example a
+  likely change that must touch several places, a caller that must know another
+  module's internals, or state that several places update with no single owner.
+  A change that is under-designed
   for its problem is as reportable as one that is overbuilt. A preference with
   no such cost is taste; leave it out.
 - Decide whether an issue is a finding by how likely supported use is to reach
@@ -151,7 +153,7 @@ Findings:
   Kind: defect | documented-rule violation | design problem
   Lens: <lens>
   Location: <file:line or artifact section>
-  Issue: <concrete problem, with the triggering scenario for a defect or the change or caller that pays for a design problem>
+  Issue: <concrete problem, with the triggering scenario for a defect or the concrete cost for a design problem>
   Evidence: <source/path reasoning or observed result, with locations>
   Cause: <the code or design decision that makes the issue possible, or not traced>
   Impact: <observable consequence or concrete maintenance cost>

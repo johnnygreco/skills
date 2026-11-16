@@ -76,9 +76,9 @@ Read surrounding code. Find bugs, broken callers, mismatch with intent.
 No style nitpicks: skip style unless it hides a bug. Do not suggest
 over-engineering or scope creep. Flag code, tests, or guards the intent
 does not need. Flag a fix that patches a symptom and leaves its cause.
-Suggest fixes at the cause. Other paths, rare cases, small perf, extra
-compat: nits.
-blocker = intended case wrong. should = real bug callers will hit, in intent. nit = rest.
+Suggest fixes at the cause. Paths outside the intent, rare cases, small
+perf, extra compat: nits.
+blocker = intended case wrong. should = real bug callers will hit, in intent, including by another path to the same cause; or a fix that leaves its cause in place. nit = rest.
 Reply:
 VERDICT: APPROVE or CHANGES
 S1 [blocker|should|nit] <file>:<line> <claim>. Fix: <suggestion> (stable ids)
@@ -86,22 +86,24 @@ S1 [blocker|should|nit] <file>:<line> <claim>. Fix: <suggestion> (stable ids)
 
 ## 3. Answer findings
 
-Check each finding and severity yourself. Another path, rare case, or
-small cost is a nit, whatever label it came with.
+Check each finding and severity yourself. A path outside the intent, a
+rare case, or a small cost is a nit, whatever label it came with. Another
+path to the same cause is part of the fix, not a nit.
 
 - Agree: fix the cause, not the place it surfaced. If the state that
   triggered the bug should never exist, fix what produces it; a guard
   where it broke only hides it. Let the cause set the size of the fix.
-  Prefer delete or narrow over new lock, cache, helper, or option. Fix
-  the case that happened, not cases that could. Add one focused test
-  that fails without the fix, if intent needs it.
+  Among fixes that reach the cause, prefer one that deletes or narrows
+  code over a new lock, cache, helper, or option. Do not add handling
+  for cases supported use does not reach. Add one focused test that
+  fails without the fix, if intent needs it.
 - Disagree: say why, with evidence (file:line, test, output).
 - Out of scope or nit: decline in one line. List as follow-up.
 
 Update the ledger. Re-run checks and `git diff --shortstat <base>`. If
-review grew the diff, check what the growth is. One correction at a cause
-is fine. Guards, options, and tests added a round at a time are not: cut
-them. Do not agree just to end the loop.
+review grew the diff, check each addition. Keep corrections at a cause and
+the one focused test each needs. Cut guards, options, and tests the intent
+does not need. Do not agree just to end the loop.
 
 ## 4. Next round
 

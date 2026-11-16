@@ -44,9 +44,9 @@ one appears.
 
 1. **Finish the change.** Complete the goal from the user's request, and solve
    it where the problem originates. A change that works by patching around a
-   design problem is not finished. Keep the scope to the goal: fix the case
-   that happened, not every case that could. If you are on the default branch,
-   create a branch first.
+   design problem is not finished. Keep the scope to the goal: do not add
+   handling for cases that supported use does not reach. If you are on the
+   default branch, create a branch first.
 2. **Prove it.** Get proof for every change you made. See "Proof".
 3. **Get feedback.** Use the `sol-loop` skill to verify changes before filing.
 4. **File the PR** by reading [file-pr](../file-pr/SKILL.md) and following

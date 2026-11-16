@@ -9,10 +9,12 @@ Is the solution understandable, cohesive, and proportionate to the problem?
   costs in this project.
 - Look for opportunities to remove redundant decisions or moving parts at their
   owner without shifting the same burden onto callers.
-- Check how the change represents its domain. Rules held in one data structure,
-  such as a state machine, a typed model, or a table, stay consistent. The same
-  rules spread across conditionals, or flags that must stay in sync, drift. A
-  change that adds one more case to an existing chain of branches is a sign.
+- Check how the change represents its domain. Rules kept in one place, such as
+  a state machine, a typed model, or a table, stay consistent. The same rules
+  repeated across conditionals, or in flags that must stay in sync, drift
+  apart. When a change adds another case to a chain of branches that encodes
+  such rules, report it if a likely change would have to update the rules in
+  several places.
 - Check that each piece of state has one owner, each task one supported way,
   and each list one source the others derive from. Duplicates diverge when a
   later change updates only the copy it sees.
