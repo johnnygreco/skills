@@ -117,12 +117,10 @@ return partial results or blockers.
 
 ## Focused Downstream Investigation
 
-For a concrete question about effects beyond the immediate change, use
-the `blast-radius` skill if available. Resolve its installed location through
-the environment's skill discovery. Supply the same frozen target, the risk
-question, supported conditions, and the assignment's scope.
-Run it within this review and return the evidence to the lead with your findings.
-If the skill is unavailable, trace the affected contracts directly and disclose
+For a concrete question about effects beyond the immediate change, trace the
+affected contracts from the changed behavior to the consumers that rely on it.
+Work within this review, against the same frozen target and supported
+conditions. Return the evidence to the lead with your findings and disclose
 unresolved boundaries. Wider investigation does not authorize wider repairs.
 
 ## Response Format
