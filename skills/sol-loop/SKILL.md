@@ -9,10 +9,13 @@ This is a workflow for making your code changes more correct before (or
 sometimes after) filing a pull request. tl;dr - use OpenAI's GPT Sol to review
 your code in a loop.
 
-Make the most minimal possible changes to appease the Sol reviewers. We are not
-interested in nitpicks, and we must avoid over-engineering and scope creep.
-Do not add abstractions, options, guards, or tests the intent does not need, and
-don't be scared to push back on findings that would.
+Keep the scope tight and the fixes sound. We are not interested in nitpicks, and
+we must avoid over-engineering and scope creep. Do not add abstractions,
+options, guards, or tests the intent does not need, and don't be scared to push
+back on findings that would. For a finding you accept, fix its cause. The goal
+is correct code, not a reviewer who stops objecting. The smallest edit that
+quiets a finding is often a guard over the symptom, and the next round finds
+the same bug by another path.
 
 ## Budget
 
@@ -71,10 +74,11 @@ Repo: <abs path> Base: <sha> Intent: <intent> Out of scope: <scope> Checks: <res
 See: git diff <base> [-- <paths>]; git status --short (read untracked).
 Read surrounding code. Find bugs, broken callers, mismatch with intent.
 No style nitpicks: skip style unless it hides a bug. Do not suggest
-over-engineering or scope creep; hold to the smallest change. Flag code,
-tests, or guards the intent does not need. Other paths, rare cases, small
+over-engineering or scope creep. Flag code, tests, or guards the intent
+does not need. Flag a fix that patches a symptom and leaves its cause.
+Suggest fixes at the cause. Paths outside the intent, rare cases, small
 perf, extra compat: nits.
-blocker = intended case wrong. should = real bug callers will hit, in intent. nit = rest.
+blocker = intended case wrong. should = real bug callers will hit, in intent, including by another path to the same cause; or a fix that leaves its cause in place. nit = rest.
 Reply:
 VERDICT: APPROVE or CHANGES
 S1 [blocker|should|nit] <file>:<line> <claim>. Fix: <suggestion> (stable ids)
@@ -82,17 +86,24 @@ S1 [blocker|should|nit] <file>:<line> <claim>. Fix: <suggestion> (stable ids)
 
 ## 3. Answer findings
 
-Check each finding and severity yourself. Another path, rare case, or
-small cost is a nit, whatever label it came with.
+Check each finding and severity yourself. A path outside the intent, a
+rare case, or a small cost is a nit, whatever label it came with. Another
+path to the same cause is part of the fix, not a nit.
 
-- Agree: smallest fix. Prefer delete or narrow over new lock, cache,
-  helper, or option. Fix the case that happened. Add one focused test
-  that fails without the fix, if intent needs it.
+- Agree: fix the cause, not the place it surfaced. If the state that
+  triggered the bug should never exist, fix what produces it; a guard
+  where it broke only hides it. Let the cause set the size of the fix.
+  Among fixes that reach the cause, prefer one that deletes or narrows
+  code over a new lock, cache, helper, or option. Do not add handling
+  for cases supported use does not reach. Add one focused test that
+  fails without the fix, if intent needs it.
 - Disagree: say why, with evidence (file:line, test, output).
 - Out of scope or nit: decline in one line. List as follow-up.
 
 Update the ledger. Re-run checks and `git diff --shortstat <base>`. If
-review grew the diff, cut first. Do not agree just to end the loop.
+review grew the diff, check each addition. Keep corrections at a cause and
+the one focused test each needs. Cut guards, options, and tests the intent
+does not need. Do not agree just to end the loop.
 
 ## 4. Next round
 

@@ -42,9 +42,11 @@ one appears.
 
 ## Steps
 
-1. **Finish the change.** Complete the goal from the user's request with the
-   smallest change that works. Fix the case that happened, not every case
-   that could. If you are on the default branch, create a branch first.
+1. **Finish the change.** Complete the goal from the user's request, and solve
+   it where the problem originates. A change that works by patching around a
+   design problem is not finished. Keep the scope to the goal: do not add
+   handling for cases that supported use does not reach. If you are on the
+   default branch, create a branch first.
 2. **Prove it.** Get proof for every change you made. See "Proof".
 3. **Get feedback.** Use the `sol-loop` skill to verify changes before filing.
 4. **File the PR** by reading [file-pr](../file-pr/SKILL.md) and following
@@ -54,8 +56,8 @@ one appears.
 5. **Panel review the PR.** Run one round of the `panel-review` skill on the
    PR head against its base. This request authorizes fixing its accepted
    findings. Fix them with `sol-loop`, carrying over the step 3 ledger with a
-   fresh round budget: you make the smallest fix, Sol reviews the fix delta,
-   and proof covers it. Decline
+   fresh round budget: you fix each finding at its cause, Sol reviews the fix
+   delta, and proof covers it. Decline
    the rest with a written reason and list them as follow-ups. Push once Sol
    agrees.
    If the round reported an accepted blocker or high finding, you may run one
